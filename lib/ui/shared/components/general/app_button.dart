@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../constants/_constants.dart';
-import '../_components.dart';
+import '../../../../core/_core.dart';
+import '../../_shared.dart';
 
 class AppButton extends StatelessWidget {
   final String label;
   final VoidCallback? onPressed;
-  final Color labelColor, buttonColor;
+  final Color? labelColor, buttonColor;
   final Color? borderColor, disabledColor;
   final double? width, height, borderRadius, labelSize, elevation;
   final bool isCollapsed, isDisabled;
@@ -22,8 +22,8 @@ class AppButton extends StatelessWidget {
     this.width,
     this.height,
     this.customChild,
-    this.buttonColor = AppColors.bidPry500,
-    this.labelColor = AppColors.white,
+    this.buttonColor,
+    this.labelColor,
     this.disabledColor,
     this.borderColor,
     this.isCollapsed = false,
@@ -46,10 +46,10 @@ class AppButton extends StatelessWidget {
     this.width,
     this.height,
     this.customChild,
-    this.buttonColor = AppColors.white,
-    this.labelColor = AppColors.bidPry500,
+    this.buttonColor,
+    this.labelColor,
     this.disabledColor,
-    this.borderColor = AppColors.bidPry500,
+    this.borderColor,
     this.isCollapsed = false,
     this.isBusy = false,
     this.isDisabled = false,
@@ -65,13 +65,17 @@ class AppButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final buttonColor = context.cScheme.brightness == Brightness.light
+    //     ? context.cScheme.onSurface
+    //     : context.cScheme.primary;
     return SizedBox(
       width: width ?? (isCollapsed ? null : double.maxFinite),
       height: height ?? (isCollapsed ? null : 48),
       child: MaterialButton(
         onPressed: isDisabled ? null : () => isBusy ? null : onPressed?.call(),
-        disabledColor: disabledColor ?? buttonColor.withOpacity(0.3),
-        color: buttonColor,
+        disabledColor:
+            disabledColor ?? context.cScheme.primary.withOpacity(0.3),
+        color: buttonColor ?? context.cScheme.primary,
         elevation: elevation,
         clipBehavior: Clip.hardEdge,
         splashColor: showFeedback ? null : buttonColor,
@@ -94,7 +98,7 @@ class AppButton extends StatelessWidget {
                 child: FittedBox(
                   child: AppLoader(
                     padding: 10,
-                    color: labelColor,
+                    color: labelColor ?? AppColors.darkBg,
                   ),
                 ),
               );
@@ -114,10 +118,8 @@ class AppButton extends StatelessWidget {
                     child: Text(
                       label,
                       textAlign: TextAlign.center,
-                      style: AppTextStyles.semiBold16.copyWith(
-                        fontSize: labelSize,
-                        fontWeight: fontWeight,
-                        color: labelColor,
+                      style: context.tTheme.titleLarge?.copyWith(
+                        color: labelColor ?? AppColors.darkBg,
                       ),
                     ),
                   ),

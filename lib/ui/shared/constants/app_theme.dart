@@ -3,36 +3,80 @@ import 'package:flutter/material.dart';
 import '_constants.dart';
 
 class AppTheme {
-  static final theme = ThemeData(
-      primarySwatch: Colors.indigo,
-      colorScheme: ColorScheme.fromSeed(seedColor: AppColors.bidPry400),
-      fontFamily: AppTextStyles.ibmPlexSans,
-      scaffoldBackgroundColor: AppColors.white,
-      useMaterial3: true,
-      dialogTheme: const DialogTheme(
-        backgroundColor: AppColors.white,
-        surfaceTintColor: AppColors.white,
+  AppTheme._();
+
+  static final lightTheme = ThemeData(
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: AppColors.lightPrimary,
+      background: AppColors.lightBg,
+      onBackground: AppColors.lightPrimary,
+      // primary: AppColors.lightPrimary,
+      // surfaceTint: AppColors.transparent,
+      // onSurface: AppColors.lightText,
+      // surface: AppColors.lightBg,
+      secondary: AppColors.lightSecondary,
+      onSecondary: AppColors.lightOnSecondary,
+    ),
+    fontFamily: AppTextStyles.lexend,
+    useMaterial3: true,
+    appBarTheme: const AppBarTheme(
+      centerTitle: false,
+      backgroundColor: AppColors.lightBg,
+      elevation: 0,
+    ),
+    textTheme: textTheme,
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      // fillColor: AppColors.lightField,
+      hintStyle: textTheme.bodyMedium,
+      contentPadding: const EdgeInsets.all(16),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide.none,
       ),
-      appBarTheme: const AppBarTheme(
-        backgroundColor: AppColors.white,
-        elevation: 0.5,
-        iconTheme: IconThemeData(size: 17),
+    ),
+  );
+
+  static final darkTheme = ThemeData(
+    colorScheme: ColorScheme.fromSeed(
+      brightness: Brightness.dark,
+      seedColor: AppColors.darkPrimary,
+      background: AppColors.darkBg,
+      onBackground: AppColors.darkPrimary,
+      // primary: AppColors.darkPrimary,
+      // onSurface: AppColors.darkText,
+      // surface: AppColors.darkBg,
+      secondary: AppColors.darkSecondary,
+      onSecondary: AppColors.darkOnSecondary,
+    ),
+    fontFamily: AppTextStyles.lexend,
+    useMaterial3: true,
+    appBarTheme: const AppBarTheme(
+      centerTitle: false,
+      backgroundColor: AppColors.darkBg,
+      elevation: 0,
+    ),
+    textTheme: textTheme,
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      // fillColor: AppColors.darkField,
+      hintStyle: textTheme.bodyMedium,
+      contentPadding: const EdgeInsets.all(16),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide.none,
       ),
-      expansionTileTheme: const ExpansionTileThemeData(
-        tilePadding: EdgeInsets.symmetric(vertical: 4),
-      ),
-      bottomSheetTheme: const BottomSheetThemeData(
-        backgroundColor: AppColors.gray50,
-      )
-      // radioTheme: RadioThemeData(
-      //   fillColor: MaterialStateProperty.resolveWith(
-      //     (states) => states.isEmpty ? AppColors.lightColor3 : null,
-      //   ),
-      // ),
-      // checkboxTheme: CheckboxThemeData(
-      //   fillColor: MaterialStateProperty.resolveWith(
-      //     (states) => states.isEmpty ? AppColors.lightColor3 : null,
-      //   ),
-      // ),
+    ),
+  );
+
+  static TextTheme get textTheme => const TextTheme(
+        // displayLarge: AppTextStyles.bold32,
+        // headlineLarge: AppTextStyles.bold18,
+        // titleLarge: AppTextStyles.bold16,
+        titleMedium: AppTextStyles.medium16,
+        titleSmall: AppTextStyles.regular16,
+        bodyLarge: AppTextStyles.bold14,
+        bodySmall: AppTextStyles.regular14,
+        labelSmall: AppTextStyles.regular12,
       );
 }

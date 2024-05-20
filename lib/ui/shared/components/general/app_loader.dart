@@ -1,9 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
-import '../../constants/_constants.dart';
 
 class AppLoader extends StatelessWidget {
   final Color? color;
@@ -11,7 +10,7 @@ class AppLoader extends StatelessWidget {
   final double? size;
   const AppLoader({
     super.key,
-    this.color = AppColors.white,
+    this.color,
     this.padding,
     this.size = 25,
   });
@@ -24,11 +23,11 @@ class AppLoader extends StatelessWidget {
         child: SizedBox(
           height: size,
           width: size,
-          child: Platform.isAndroid
-              ? CircularProgressIndicator(
-                  color: color,
-                )
-              : CupertinoActivityIndicator(color: color, radius: 13),
+          child: kIsWeb
+              ? CircularProgressIndicator(color: color)
+              : Platform.isAndroid
+                  ? CircularProgressIndicator(color: color)
+                  : CupertinoActivityIndicator(color: color, radius: 13),
         ),
       ),
     );
