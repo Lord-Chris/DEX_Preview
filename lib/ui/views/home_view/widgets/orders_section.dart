@@ -24,7 +24,9 @@ class OrdersSection extends ViewModelWidget<HomeViewModel> {
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 16),
                   decoration: BoxDecoration(
-                    color: context.cScheme.secondary,
+                    color: context.isDark
+                        ? AppColors.black.withOpacity(.16)
+                        : context.cScheme.secondary,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(

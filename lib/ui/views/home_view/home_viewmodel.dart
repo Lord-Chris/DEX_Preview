@@ -41,10 +41,10 @@ class HomeViewModel extends MultipleStreamViewModel {
   Future<void> init() async {
     try {
       setBusy(true);
-      await _webSsocketService.init(_symbol);
+      // await _webSsocketService.init(_symbol);
       // await fetchSymbols();
       // await fetchCandles();
-      subscribeToSymbol();
+      // subscribeToSymbol();
     } on IFailure catch (e) {
       _log.e(e);
     } finally {

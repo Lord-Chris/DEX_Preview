@@ -32,14 +32,37 @@ class AppTheme {
       backgroundColor: AppColors.lightSheetBg,
       surfaceTintColor: AppColors.transparent,
     ),
+    checkboxTheme: CheckboxThemeData(
+      fillColor: MaterialStateColor.resolveWith((states) {
+        if (states.contains(MaterialState.selected)) {
+          return AppColors.green;
+        }
+        return AppColors.transparent;
+      }),
+      checkColor: MaterialStateProperty.all(AppColors.lightOnSecondary),
+      visualDensity: VisualDensity.compact,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(4),
+      ),
+    ),
     textTheme: textTheme,
     inputDecorationTheme: InputDecorationTheme(
       filled: false,
-      hintStyle: textTheme.bodyMedium,
-      contentPadding: const EdgeInsets.all(16),
+      hintStyle: AppTextStyles.medium12.copyWith(
+        color: AppColors.lightOnSecondary,
+      ),
+      contentPadding: const EdgeInsets.fromLTRB(16, 13, 16, 13),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.circular(8),
+        borderSide: const BorderSide(color: AppColors.lightSecondary, width: 1),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: const BorderSide(color: AppColors.lightSecondary, width: 1),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: const BorderSide(color: AppColors.lightSecondary, width: 1),
       ),
     ),
   );
@@ -51,9 +74,6 @@ class AppTheme {
       background: AppColors.darkBg,
       onBackground: AppColors.darkPrimary,
       surfaceTint: AppColors.transparent,
-      // primary: AppColors.darkPrimary,
-      // onSurface: AppColors.darkText,
-      // surface: AppColors.darkBg,
       secondary: AppColors.darkSecondary,
       onSecondary: AppColors.darkOnSecondary,
       primaryContainer: AppColors.darkActive,
@@ -72,15 +92,40 @@ class AppTheme {
       backgroundColor: AppColors.darkSheetBg,
       surfaceTintColor: AppColors.transparent,
     ),
+    checkboxTheme: CheckboxThemeData(
+      fillColor: MaterialStateColor.resolveWith((states) {
+        if (states.contains(MaterialState.selected)) {
+          return AppColors.green;
+        }
+        return AppColors.transparent;
+      }),
+      checkColor: MaterialStateProperty.all(AppColors.darkOnSecondary),
+      visualDensity: VisualDensity.compact,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(4),
+      ),
+    ),
     textTheme: textTheme,
     inputDecorationTheme: InputDecorationTheme(
-      filled: true,
-      // fillColor: AppColors.darkField,
-      hintStyle: textTheme.bodyMedium,
-      contentPadding: const EdgeInsets.all(16),
+      filled: false,
+      hintStyle: AppTextStyles.medium12.copyWith(
+        color: AppColors.darkOnSecondary,
+      ),
+      contentPadding: const EdgeInsets.fromLTRB(16, 13, 16, 13),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.circular(8),
+        borderSide:
+            const BorderSide(color: AppColors.darkFieldBorder, width: 1),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide:
+            const BorderSide(color: AppColors.darkFieldBorder, width: 1),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide:
+            const BorderSide(color: AppColors.darkFieldBorder, width: 1),
       ),
     ),
   );

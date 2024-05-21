@@ -28,7 +28,7 @@ class SectionItem extends StatelessWidget {
           color: isActive
               ? context.cScheme.secondaryContainer
                   .withOpacity(context.isDark ? .5 : 1)
-              : context.cScheme.secondary,
+              : AppColors.transparent,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
             color: isActive

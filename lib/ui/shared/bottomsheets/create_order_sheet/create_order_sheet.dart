@@ -28,13 +28,12 @@ class CreateOrderSheet extends StatelessWidget {
           ),
           builder: (context) {
             return Padding(
-              padding: const EdgeInsets.fromLTRB(16, 10, 16, 32),
+              padding: const EdgeInsets.fromLTRB(30, 28, 30, 32),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 16),
                     decoration: BoxDecoration(
                       color: context.cScheme.secondary,
                       borderRadius: BorderRadius.circular(8),
@@ -55,69 +54,84 @@ class CreateOrderSheet extends StatelessWidget {
                   ),
                   Spacing.vertRegular(),
                   Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                    margin: const EdgeInsets.symmetric(horizontal: 8),
                     height: 45,
                     child: Row(
-                      children: ['Buy', 'Sell']
-                          .map((filter) => Expanded(
-                                child: SectionItem(
-                                  label: filter,
-                                  activeBorderColor: AppColors.green,
-                                  isActive: viewModel.orderType == filter,
-                                  onTap: () => viewModel.setOrdertype(filter),
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: ['Limit', 'Market', 'Stop-Limit'].map(
+                        (filter) {
+                          final isActive = viewModel.type == filter;
+                          return InkWell(
+                            onTap: () => viewModel.setType(filter),
+                            child: Container(
+                              margin: const EdgeInsets.all(3),
+                              padding: const EdgeInsets.fromLTRB(12, 6, 12, 6),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color:
+                                    isActive ? context.cScheme.secondary : null,
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                              child: Text(
+                                filter,
+                                style: AppTextStyles.medium14.copyWith(
+                                  color: isActive
+                                      ? context.cScheme.onBackground
+                                      : context.cScheme.onSecondary,
                                 ),
-                              ))
-                          .toList(),
+                              ),
+                            ),
+                          );
+                        },
+                      ).toList(),
                     ),
                   ),
                   Spacing.vertRegular(),
-                  const AppTextField(
+                  AppTextField(
                     textAlign: TextAlign.end,
                     hint: '0.00 USD',
-                    contentPadding: EdgeInsets.fromLTRB(16, 12, 16, 12),
-                    prefix: Row(
-                      children: [
-                        Text(
-                          'Limit price',
-                          style: AppTextStyles.medium12,
-                        ),
-                        Icon(Icons.info_outline, size: 12),
-                      ],
+                    prefix: Text(
+                      'Limit price',
+                      style: AppTextStyles.medium12.copyWith(
+                        color: context.cScheme.onSecondary,
+                      ),
                     ),
                   ),
-                  const AppTextField(
+                  Spacing.vertRegular(),
+                  AppTextField(
                     textAlign: TextAlign.end,
                     hint: '0.00 USD',
-                    contentPadding: EdgeInsets.fromLTRB(16, 12, 16, 12),
-                    prefix: Row(
-                      children: [
-                        Text(
-                          'Limit price',
-                          style: AppTextStyles.medium12,
-                        ),
-                        Icon(Icons.info_outline, size: 12),
-                      ],
+                    prefix: Text(
+                      'Amount',
+                      style: AppTextStyles.medium12.copyWith(
+                        color: context.cScheme.onSecondary,
+                      ),
                     ),
                   ),
-                  const AppTextField(
-                    textAlign: TextAlign.end,
+                  Spacing.vertRegular(),
+                  AppDropdownField<String>(
+                    items: const ['Good till cancelled'],
+                    value: 'Good till cancelled',
                     hint: '0.00 USD',
-                    contentPadding: EdgeInsets.fromLTRB(16, 12, 16, 12),
-                    prefix: Row(
-                      children: [
-                        Text(
-                          'Limit price',
-                          style: AppTextStyles.medium12,
-                        ),
-                        Icon(Icons.info_outline, size: 12),
-                      ],
+                    prefix: Text(
+                      'Type',
+                      style: AppTextStyles.medium12.copyWith(
+                        color: context.cScheme.onSecondary,
+                      ),
                     ),
                   ),
+                  Spacing.vertSmall(),
                   Row(
                     children: [
                       Checkbox(
-                        value: true,
+                        value: false,
                         onChanged: (val) {},
+                        fillColor: MaterialStateColor.resolveWith((states) {
+                          if (states.contains(MaterialState.selected)) {
+                            return context.cScheme.secondary;
+                          }
+                          return AppColors.transparent;
+                        }),
                       ),
                       Text(
                         'Post Only',
@@ -125,9 +139,11 @@ class CreateOrderSheet extends StatelessWidget {
                           color: context.cScheme.onSecondary,
                         ),
                       ),
+                      Spacing.horizTiny(),
                       const Icon(Icons.info_outline, size: 12),
                     ],
                   ),
+                  Spacing.vertSmall(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -145,7 +161,7 @@ class CreateOrderSheet extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Spacing.vertMedium(),
+                  Spacing.vertRegular(),
                   Container(
                     height: 32,
                     decoration: BoxDecoration(
@@ -167,7 +183,9 @@ class CreateOrderSheet extends StatelessWidget {
                       ),
                     ),
                   ),
+                  Spacing.vertSmall(),
                   const Divider(),
+                  Spacing.vertSmall(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -177,20 +195,23 @@ class CreateOrderSheet extends StatelessWidget {
                           color: context.cScheme.onSecondary,
                         ),
                       ),
+                      const Spacer(),
                       Text(
                         'NGN',
                         style: AppTextStyles.medium12.copyWith(
                           color: context.cScheme.onSecondary,
                         ),
                       ),
+                      Icon(Icons.keyboard_arrow_down_sharp,
+                          color: context.cScheme.onSecondary, size: 16),
                     ],
                   ),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       '0.00',
-                      style: AppTextStyles.medium12.copyWith(
-                        color: context.cScheme.onSecondary,
+                      style: AppTextStyles.bold14.copyWith(
+                        color: context.cScheme.onBackground,
                       ),
                     ),
                   ),
@@ -217,18 +238,19 @@ class CreateOrderSheet extends StatelessWidget {
                     children: [
                       Text(
                         '0.00',
-                        style: AppTextStyles.medium12.copyWith(
-                          color: context.cScheme.onSecondary,
+                        style: AppTextStyles.bold14.copyWith(
+                          color: context.cScheme.onBackground,
                         ),
                       ),
                       Text(
                         '0.00',
-                        style: AppTextStyles.medium12.copyWith(
-                          color: context.cScheme.onSecondary,
+                        style: AppTextStyles.bold14.copyWith(
+                          color: context.cScheme.onBackground,
                         ),
                       ),
                     ],
                   ),
+                  Spacing.vertExtraMedium(),
                   AppButton(
                     label: 'Deposit',
                     buttonColor: AppColors.blue,

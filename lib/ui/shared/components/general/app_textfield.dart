@@ -110,9 +110,7 @@ class AppTextField extends StatelessWidget {
             textAlign: textAlign ?? TextAlign.start,
             onEditingComplete:
                 onEditingComplete ?? () => FocusScope.of(context).nextFocus(),
-            style: context.tTheme.titleSmall?.copyWith(
-              height: 1.2,
-            ),
+            style: AppTextStyles.medium12,
             decoration: decoration ??
                 InputDecoration(
                   hintText: hint,
@@ -124,8 +122,14 @@ class AppTextField extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: prefix!,
+                              padding: const EdgeInsets.only(left: 15),
+                              child: Row(
+                                children: [
+                                  prefix!,
+                                  Spacing.horizTiny(),
+                                  const Icon(Icons.info_outline, size: 12),
+                                ],
+                              ),
                             ),
                           ],
                         )
@@ -197,13 +201,16 @@ class AppDropdownField<T> extends StatelessWidget {
               }
               return DropdownMenuItem(
                 value: item,
-                child: Text(
-                  displayItem != null ? displayItem!(item) : item.toString(),
-                  overflow: TextOverflow.ellipsis,
-                  softWrap: true,
-                  style: AppTextStyles.regular16.copyWith(
-                    // color: AppColors.gray600,
-                    height: .4,
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    displayItem != null ? displayItem!(item) : item.toString(),
+                    overflow: TextOverflow.ellipsis,
+                    softWrap: true,
+                    textAlign: TextAlign.right,
+                    style: AppTextStyles.medium12.copyWith(
+                      height: 1,
+                    ),
                   ),
                 ),
               );
@@ -215,17 +222,31 @@ class AppDropdownField<T> extends StatelessWidget {
           value: value,
           focusNode: focusNode,
           icon: const Icon(Icons.keyboard_arrow_down, size: 0),
-          style: AppTextStyles.regular16,
-          // decoration: AppTextField.kOutlineDecoration(context).copyWith(
-          //   hintText: hint,
-          //   prefixIcon: prefix,
-          //   enabled: enabled,
-          //   suffixIcon: const Icon(
-          //     Icons.keyboard_arrow_down,
-          //     // color: AppColors.gray400,
-          //     size: 25,
-          //   ),
-          // ),
+          style: AppTextStyles.medium12,
+          alignment: Alignment.centerRight,
+          decoration: InputDecoration(
+            hintText: hint,
+            hintStyle: AppTextStyles.medium12,
+            prefixIcon: (prefix != null)
+                ? Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15),
+                        child: Row(
+                          children: [
+                            prefix!,
+                            Spacing.horizTiny(),
+                            const Icon(Icons.info_outline, size: 12),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+                : null,
+            enabled: enabled,
+          ),
         ),
       ],
     );

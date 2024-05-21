@@ -15,6 +15,7 @@ class AppColors {
   static const lightOnSecondary = Color(0xFF737A91);
   static const lightActive = Color(0xFFCFD3D8);
   static const lightActive2 = Color(0xFFFFFFFF);
+  static const lightActive3 = Color(0xFFFFFFFF);
   static const lightSheetBg = Color(0xFFFFFFFF);
 
   /// Dark
@@ -23,8 +24,10 @@ class AppColors {
   static const darkSecondary = Color(0xFF1C2127);
   static const darkOnSecondary = Color(0xFFA7B1BC);
   static const darkActive = Color(0xFF555C63);
-  static final darkActive2 = const Color(0xFFE9F0FF).withOpacity(.05);
+  static const darkActive2 = Color(0xFF21262C);
+  static const darkActive3 = Color(0xFF21262C);
   static const darkSheetBg = Color(0xFF20252B);
+  static const darkFieldBorder = Color(0xFF373B3F);
 
   // Common
   static const green = Color(0xFF25C26E);
