@@ -15,16 +15,16 @@ class HomeViewModel extends MultipleStreamViewModel {
   final _log = getLogger('HomeViewModel');
 
   String _symbol = '';
-  String _interval = '1h';
+  String _interval = '1m';
   MainViewEnum mainView = MainViewEnum.charts;
-  List<CandleData> candles = [];
+  List<CandleData> _candles = [];
   ValueNotifier<TickerData?> tickerData = ValueNotifier(null);
   OrdersViewEnum ordersView = OrdersViewEnum.openOrders;
 
   void setInterval(String value) {
     _interval = value;
     notifyListeners();
-    candles.clear();
+    _candles.clear();
     fetchCandles();
   }
 
@@ -55,14 +55,15 @@ class HomeViewModel extends MultipleStreamViewModel {
   Future<void> fetchSymbols() async {
     final symbols = await _binanceService.fetchSymbols();
     if (symbols.isEmpty) return;
-    _symbol =
-        symbols.firstWhereOrNull((e) => e.startsWith('BTC')) ?? symbols.first;
+    _symbol = (symbols.firstWhereOrNull((e) => e.symbol.startsWith('BTC')) ??
+            symbols.first)
+        .symbol;
     notifyListeners();
   }
 
   Future<void> fetchCandles() async {
     final candles = await _binanceService.fetchCandles(_symbol, _interval);
-    this.candles = [...this.candles, ...candles];
+    _candles = [..._candles, ...candles];
     notifyListeners();
   }
 
@@ -87,7 +88,7 @@ class HomeViewModel extends MultipleStreamViewModel {
   void onData(String key, data) {
     super.onData(key, data);
     if (key == 'candleDataStream') {
-      candles.add(data);
+      _candles.add(data);
     }
     if (key == 'tickerDataStream') {
       tickerData.value = data;
@@ -103,4 +104,5 @@ class HomeViewModel extends MultipleStreamViewModel {
       };
 
   String get symbol => '${_symbol.split('-').first}/USDT';
+  List<CandleData> get candles => _candles;
 }

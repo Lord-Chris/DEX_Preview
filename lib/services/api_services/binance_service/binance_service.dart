@@ -7,11 +7,10 @@ class BinanceService extends IBinanceService {
   final _networkService = locator<INetworkService>();
 
   @override
-  Future<List<String>> fetchSymbols() async {
-    // const uri = 'https://eapi.binance.com/eapi/v1/index?underlying=BTCUSDT';
+  Future<List<SymbolData>> fetchSymbols() async {
     const uri = 'https://eapi.binance.com/eapi/v1/ticker';
     final res = await _networkService.get(uri);
-    return (res as List<dynamic>).map((e) => e['symbol'] as String).toList();
+    return (res as List<dynamic>).map((e) => SymbolData.fromJson(e)).toList();
   }
 
   @override

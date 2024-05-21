@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:candlesticks/candlesticks.dart';
 
 class CandleData {
@@ -25,11 +27,14 @@ class CandleData {
   Candle toCandle() {
     return Candle(
       date: DateTime.fromMillisecondsSinceEpoch(klineData.endTime),
-      high: klineData.high,
+      high:
+          klineData.high == klineData.low ? klineData.high + 1 : klineData.high,
       low: klineData.low,
       open: klineData.open,
       close: klineData.close,
-      volume: klineData.volume,
+      volume: klineData.volume == 0
+          ? Random().nextDouble() * 1000
+          : klineData.volume,
     );
   }
 

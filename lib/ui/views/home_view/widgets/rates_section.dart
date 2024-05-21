@@ -39,17 +39,16 @@ class RatesSection extends ViewModelWidget<HomeViewModel> {
             ),
           ),
           Spacing.vertRegular(),
-          if (viewModel.candles.length > 20)
-            Expanded(
-              child: Container(
-                height: 400,
-                width: context.screenSize.width,
-                color: context.cScheme.background,
-                child: Candlesticks(
-                  candles: viewModel.candles.map((e) => e.toCandle()).toList(),
-                ),
+          Expanded(
+            child: Container(
+              height: 400,
+              width: context.screenSize.width,
+              color: context.cScheme.background,
+              child: Candlesticks(
+                candles: viewModel.candles.map((e) => e.toCandle()).toList(),
               ),
             ),
+          ),
         ],
       ),
     );
