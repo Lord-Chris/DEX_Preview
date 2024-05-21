@@ -46,6 +46,7 @@ class AppTheme {
       ),
     ),
     textTheme: textTheme,
+    cardColor: AppColors.white,
     inputDecorationTheme: InputDecorationTheme(
       filled: false,
       hintStyle: AppTextStyles.medium12.copyWith(
@@ -92,6 +93,7 @@ class AppTheme {
       backgroundColor: AppColors.darkSheetBg,
       surfaceTintColor: AppColors.transparent,
     ),
+    cardColor: AppColors.darkSecondary,
     checkboxTheme: CheckboxThemeData(
       fillColor: MaterialStateColor.resolveWith((states) {
         if (states.contains(MaterialState.selected)) {

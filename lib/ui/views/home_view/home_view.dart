@@ -6,6 +6,7 @@ import '../../../core/_core.dart';
 import '../../shared/_shared.dart';
 import 'home_viewmodel.dart';
 import 'widgets/orders_section.dart';
+import 'widgets/pop_menu.dart';
 import 'widgets/rates_section.dart';
 import 'widgets/ticker_section.dart';
 
@@ -14,6 +15,7 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = OverlayPortalController();
     return ViewModelBuilder<HomeViewModel>.reactive(
       viewModelBuilder: () => HomeViewModel(),
       onViewModelReady: (viewModel) => viewModel.init(),
@@ -40,8 +42,13 @@ class HomeView extends StatelessWidget {
               ),
               Spacing.horizTiny(),
               IconButton(
-                icon: SvgPicture.asset(AppSvgAssets.menu),
-                onPressed: () {},
+                icon: OverlayPortal(
+                  controller: controller,
+                  overlayChildBuilder: (context) =>
+                      PopMenu(controller: controller),
+                  child: SvgPicture.asset(AppSvgAssets.menu),
+                ),
+                onPressed: () => controller.toggle(),
               ),
               Spacing.horizRegular(),
             ],

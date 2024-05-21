@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 extension Contexter on BuildContext {
+  /// Returns the theme defined in the current theme context.
+  ThemeData get theme => Theme.of(this);
+
   /// Returns the text theme defined in the current theme context.
   ///
   /// This extension method retrieves the [TextTheme] defined in the
