@@ -31,6 +31,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   flutter:
     sdk: flutter
+  flutter_svg: ^2.0.10+1
   logger: ^2.3.0
   stacked: ^3.4.2
   stacked_services: ^1.5.0

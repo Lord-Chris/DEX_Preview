@@ -43,10 +43,28 @@ class AppTextStyles {
   );
 
   /// Medium
+  static const medium12 = TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w500,
+    height: 1.67,
+  );
+
+  static const medium14 = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    height: 1.7,
+  );
+
   static const medium16 = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w500,
     height: 1.5,
+  );
+
+  static const medium18 = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w500,
+    height: 1.78,
   );
 
   /// Bold

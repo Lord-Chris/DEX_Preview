@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'core/app/_app.dart';
-import 'core/app/app.router.dart';
 import 'ui/shared/_shared.dart';
 
 void main() {
+  setupLocator();
+  setupBottomSheetUi();
   runApp(const MyApp());
 }
 

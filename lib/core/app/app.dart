@@ -1,6 +1,7 @@
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
 
+import '../../ui/shared/bottomsheets/create_order_sheet/create_order_sheet.dart';
 import '../../ui/views/home_view/home_view.dart';
 
 /// Run "flutter pub run build_runner build --delete-conflicting-outputs"
@@ -23,6 +24,9 @@ import '../../ui/views/home_view/home_view.dart';
 
     /// API Services
     // LazySingleton(classType: UserService, asType: IUserService),
+  ],
+  bottomsheets: [
+    StackedBottomsheet(classType: CreateOrderSheet),
   ],
 )
 class App {}

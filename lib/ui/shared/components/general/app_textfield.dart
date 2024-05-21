@@ -32,6 +32,7 @@ class AppTextField extends StatelessWidget {
   final Color? fillColor;
   final InputDecoration? decoration;
   final List<TextInputFormatter>? inputFormatters;
+  final EdgeInsetsGeometry? contentPadding;
 
   const AppTextField({
     super.key,
@@ -64,6 +65,7 @@ class AppTextField extends StatelessWidget {
     this.textAlignVertical,
     this.bottomRightWidget,
     this.inputFormatters,
+    this.contentPadding,
   }) : assert(initialValue == null || controller == null);
 
   @override
@@ -114,6 +116,7 @@ class AppTextField extends StatelessWidget {
             decoration: decoration ??
                 InputDecoration(
                   hintText: hint,
+                  contentPadding: contentPadding,
                   suffixIcon: suffix,
                   prefixIcon: (prefix != null)
                       ? Row(

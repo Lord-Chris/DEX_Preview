@@ -70,7 +70,7 @@ class AppButton extends StatelessWidget {
     //     : context.cScheme.primary;
     return SizedBox(
       width: width ?? (isCollapsed ? null : double.maxFinite),
-      height: height ?? (isCollapsed ? null : 48),
+      height: height ?? (isCollapsed ? null : 32),
       child: MaterialButton(
         onPressed: isDisabled ? null : () => isBusy ? null : onPressed?.call(),
         disabledColor:
@@ -81,7 +81,7 @@ class AppButton extends StatelessWidget {
         splashColor: showFeedback ? null : buttonColor,
         highlightColor: showFeedback ? null : buttonColor,
         highlightElevation: showFeedback ? 4 : 0,
-        padding: padding ?? const EdgeInsets.all(10),
+        padding: padding ?? const EdgeInsets.all(5),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius ?? 8),
           side: hasBorder
@@ -98,7 +98,7 @@ class AppButton extends StatelessWidget {
                 child: FittedBox(
                   child: AppLoader(
                     padding: 10,
-                    color: labelColor ?? AppColors.darkBg,
+                    color: labelColor ?? AppColors.white,
                   ),
                 ),
               );
@@ -118,8 +118,8 @@ class AppButton extends StatelessWidget {
                     child: Text(
                       label,
                       textAlign: TextAlign.center,
-                      style: context.tTheme.titleLarge?.copyWith(
-                        color: labelColor ?? AppColors.darkBg,
+                      style: AppTextStyles.bold16.copyWith(
+                        color: labelColor ?? AppColors.white,
                       ),
                     ),
                   ),
