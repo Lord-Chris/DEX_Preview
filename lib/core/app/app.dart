@@ -1,6 +1,8 @@
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
 
+import '../../services/api_services/_api_services.dart';
+import '../../services/core_services/_core_services.dart';
 import '../../ui/shared/bottomsheets/create_order_sheet/create_order_sheet.dart';
 import '../../ui/views/home_view/home_view.dart';
 
@@ -18,12 +20,12 @@ import '../../ui/views/home_view/home_view.dart';
     LazySingleton(classType: BottomSheetService),
 
     /// Core Services
-    // LazySingleton(classType: CrashlyticsService, asType: ICrashlyticsService),
-    // LazySingleton(classType: NetworkService, asType: INetworkService),
+    LazySingleton(classType: WebSocketService, asType: IWebSocketService),
+    LazySingleton(classType: NetworkService, asType: INetworkService),
     // LazySingleton(classType: WebSocketService, asType: IWebSocketService),
 
     /// API Services
-    // LazySingleton(classType: UserService, asType: IUserService),
+    LazySingleton(classType: BinanceService, asType: IBinanceService),
   ],
   bottomsheets: [
     StackedBottomsheet(classType: CreateOrderSheet),

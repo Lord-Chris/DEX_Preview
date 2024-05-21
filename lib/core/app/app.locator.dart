@@ -10,6 +10,13 @@ import 'package:stacked_services/src/bottom_sheet/bottom_sheet_service.dart';
 import 'package:stacked_services/src/navigation/navigation_service.dart';
 import 'package:stacked_shared/stacked_shared.dart';
 
+import '../../services/api_services/binance_service/binance_service.dart';
+import '../../services/api_services/binance_service/i_binance_service.dart';
+import '../../services/core_services/network_service/i_network_service.dart';
+import '../../services/core_services/network_service/network_service.dart';
+import '../../services/core_services/websocket_service/i_websocket_service.dart';
+import '../../services/core_services/websocket_service/websocket_service.dart';
+
 final locator = StackedLocator.instance;
 
 Future<void> setupLocator({
@@ -23,4 +30,7 @@ Future<void> setupLocator({
 // Register dependencies
   locator.registerLazySingleton(() => NavigationService());
   locator.registerLazySingleton(() => BottomSheetService());
+  locator.registerLazySingleton<IWebSocketService>(() => WebSocketService());
+  locator.registerLazySingleton<INetworkService>(() => NetworkService());
+  locator.registerLazySingleton<IBinanceService>(() => BinanceService());
 }

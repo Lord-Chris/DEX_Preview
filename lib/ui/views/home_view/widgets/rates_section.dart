@@ -1,4 +1,6 @@
+import 'package:candlesticks/candlesticks.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../../core/_core.dart';
@@ -13,6 +15,7 @@ class RatesSection extends ViewModelWidget<HomeViewModel> {
   @override
   Widget build(BuildContext context, HomeViewModel viewModel) {
     return Container(
+      height: 400,
       color: context.cScheme.background,
       child: Column(
         children: [
@@ -36,10 +39,17 @@ class RatesSection extends ViewModelWidget<HomeViewModel> {
             ),
           ),
           Spacing.vertRegular(),
-          Container(
-            height: 200,
-            color: context.cScheme.background,
-          ),
+          if (viewModel.candles.length > 20)
+            Expanded(
+              child: Container(
+                height: 400,
+                width: context.screenSize.width,
+                color: context.cScheme.background,
+                child: Candlesticks(
+                  candles: viewModel.candles.map((e) => e.toCandle()).toList(),
+                ),
+              ),
+            ),
         ],
       ),
     );

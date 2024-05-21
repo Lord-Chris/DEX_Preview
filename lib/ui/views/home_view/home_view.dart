@@ -16,6 +16,7 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<HomeViewModel>.reactive(
       viewModelBuilder: () => HomeViewModel(),
+      onViewModelReady: (viewModel) => viewModel.init(),
       builder: (context, viewModel, child) {
         return Scaffold(
           appBar: AppBar(
@@ -45,98 +46,103 @@ class HomeView extends StatelessWidget {
               Spacing.horizRegular(),
             ],
           ),
-          body: ListView(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            children: [
-              Container(
-                color: context.cScheme.background,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Spacing.horizRegular(),
-                        SvgPicture.asset(AppSvgAssets.btcUsdt, height: 24),
-                        Spacing.horizSmall(),
-                        Text(
-                          viewModel.exchange,
-                          style: AppTextStyles.medium18.copyWith(
-                            color: context.cScheme.onBackground,
+          body: Builder(builder: (context) {
+            if (viewModel.isBusy) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            return ListView(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              children: [
+                Container(
+                  color: context.cScheme.background,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Spacing.horizRegular(),
+                          SvgPicture.asset(AppSvgAssets.btcUsdt, height: 24),
+                          Spacing.horizSmall(),
+                          Text(
+                            viewModel.symbol,
+                            style: AppTextStyles.medium18.copyWith(
+                              color: context.cScheme.onBackground,
+                            ),
                           ),
-                        ),
-                        Spacing.horizSmall(),
-                        const Icon(CupertinoIcons.chevron_down, size: 14),
-                        Spacing.horizLarge(),
-                        Text(
-                          r'$20,634',
-                          style: AppTextStyles.medium18.copyWith(
-                            color: AppColors.green,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Spacing.vertRegular(),
-                    SizedBox(
-                      height: 48,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: const [
-                          ExchangeDetail(
-                            icon: Icons.access_time,
-                            title: '24h Change',
-                            value: '520.80 +1.25%',
-                            color: AppColors.green,
-                          ),
-                          VerticalDivider(),
-                          ExchangeDetail(
-                            icon: CupertinoIcons.up_arrow,
-                            title: '24h high',
-                            value: '520.80 +1.25%',
-                          ),
-                          VerticalDivider(),
-                          ExchangeDetail(
-                            icon: CupertinoIcons.down_arrow,
-                            title: '24h low',
-                            value: '520.80 +1.25%',
+                          Spacing.horizSmall(),
+                          const Icon(CupertinoIcons.chevron_down, size: 14),
+                          Spacing.horizLarge(),
+                          Text(
+                            r'$20,634',
+                            style: AppTextStyles.medium18.copyWith(
+                              color: AppColors.green,
+                            ),
                           ),
                         ],
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              Spacing.vertSmall(),
-              const RatesSection(),
-              Spacing.vertSmall(),
-              const OrdersSection(),
-              Spacing.vertLarge(),
-              Container(
-                padding: const EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: AppButton(
-                        label: 'Buy',
-                        onPressed: viewModel.openCreateOrderSheet,
-                        buttonColor: AppColors.green,
-                        labelColor: AppColors.white,
+                      Spacing.vertRegular(),
+                      SizedBox(
+                        height: 48,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: const [
+                            ExchangeDetail(
+                              icon: Icons.access_time,
+                              title: '24h Change',
+                              value: '520.80 +1.25%',
+                              color: AppColors.green,
+                            ),
+                            VerticalDivider(),
+                            ExchangeDetail(
+                              icon: CupertinoIcons.up_arrow,
+                              title: '24h high',
+                              value: '520.80 +1.25%',
+                            ),
+                            VerticalDivider(),
+                            ExchangeDetail(
+                              icon: CupertinoIcons.down_arrow,
+                              title: '24h low',
+                              value: '520.80 +1.25%',
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    Spacing.horizRegular(),
-                    Expanded(
-                      child: AppButton(
-                        label: 'Sell',
-                        onPressed: () {},
-                        buttonColor: AppColors.red,
-                        labelColor: AppColors.white,
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Spacing.vertLarge(),
-            ],
-          ),
+                Spacing.vertSmall(),
+                const RatesSection(),
+                Spacing.vertSmall(),
+                const OrdersSection(),
+                Spacing.vertLarge(),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: AppButton(
+                          label: 'Buy',
+                          onPressed: viewModel.openCreateOrderSheet,
+                          buttonColor: AppColors.green,
+                          labelColor: AppColors.white,
+                        ),
+                      ),
+                      Spacing.horizRegular(),
+                      Expanded(
+                        child: AppButton(
+                          label: 'Sell',
+                          onPressed: () {},
+                          buttonColor: AppColors.red,
+                          labelColor: AppColors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Spacing.vertLarge(),
+              ],
+            );
+          }),
         );
       },
     );

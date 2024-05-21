@@ -11,7 +11,7 @@ class ScrollableColumn extends StatelessWidget {
   final ScrollPhysics? physics;
 
   const ScrollableColumn({
-    Key? key,
+    super.key,
     CrossAxisAlignment? crossAxisAlignment,
     MainAxisAlignment? mainAxisAlignment,
     VerticalDirection? verticalDirection,
@@ -23,8 +23,7 @@ class ScrollableColumn extends StatelessWidget {
   })  : crossAxisAlignment = crossAxisAlignment ?? CrossAxisAlignment.center,
         mainAxisAlignment = mainAxisAlignment ?? MainAxisAlignment.start,
         verticalDirection = verticalDirection ?? VerticalDirection.down,
-        padding = padding ?? EdgeInsets.zero,
-        super(key: key);
+        padding = padding ?? EdgeInsets.zero;
 
   @override
   Widget build(BuildContext context) {
