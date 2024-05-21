@@ -21,7 +21,7 @@ class BinanceService extends IBinanceService {
 
     return (res as List<dynamic>).map((e) {
       e['symbol'] = symbol;
-      return CandleData.fromJson2(e);
+      return CandleData.fromJson(e);
     }).toList();
   }
 }

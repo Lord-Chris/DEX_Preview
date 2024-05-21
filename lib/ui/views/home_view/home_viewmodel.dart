@@ -14,8 +14,8 @@ class HomeViewModel extends MultipleStreamViewModel {
   final _binanceService = locator<IBinanceService>();
   final _log = getLogger('HomeViewModel');
 
-  String _symbol = '';
-  String _interval = '1m';
+  String _symbol = 'BTCUSDT';
+  String _interval = '1s';
   MainViewEnum mainView = MainViewEnum.charts;
   List<CandleData> _candles = [];
   ValueNotifier<TickerData?> tickerData = ValueNotifier(null);
@@ -25,7 +25,7 @@ class HomeViewModel extends MultipleStreamViewModel {
     _interval = value;
     notifyListeners();
     _candles.clear();
-    fetchCandles();
+    // fetchCandles();
   }
 
   void setMainView(MainViewEnum value) {
@@ -42,8 +42,8 @@ class HomeViewModel extends MultipleStreamViewModel {
     try {
       setBusy(true);
       await _webSsocketService.init(_symbol);
-      await fetchSymbols();
-      await fetchCandles();
+      // await fetchSymbols();
+      // await fetchCandles();
       subscribeToSymbol();
     } on IFailure catch (e) {
       _log.e(e);
@@ -88,7 +88,7 @@ class HomeViewModel extends MultipleStreamViewModel {
   void onData(String key, data) {
     super.onData(key, data);
     if (key == 'candleDataStream') {
-      _candles.add(data);
+      _candles.addAll(data);
     }
     if (key == 'tickerDataStream') {
       tickerData.value = data;
@@ -100,9 +100,9 @@ class HomeViewModel extends MultipleStreamViewModel {
         'tickerDataStream':
             StreamData<TickerData>(_webSsocketService.tickerDataStream),
         'candleDataStream':
-            StreamData<CandleData>(_webSsocketService.candleDataStream),
+            StreamData<List<CandleData>>(_webSsocketService.candleDataStream),
       };
 
-  String get symbol => '${_symbol.split('-').first}/USDT';
+  String get symbol => _symbol;
   List<CandleData> get candles => _candles;
 }

@@ -39,6 +39,7 @@ dependencies:
   logger: ^2.3.0
   stacked: ^3.4.2
   stacked_services: ^1.5.0
+  uuid: ^4.4.0
   web_socket_channel: null
   web_socket_client: null
 

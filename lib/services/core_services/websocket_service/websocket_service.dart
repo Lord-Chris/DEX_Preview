@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:web_socket_channel/status.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:web_socket_client/web_socket_client.dart';
 
 import '../../../core/_core.dart';
 import '../../../core/app/_app.dart';
@@ -10,60 +10,49 @@ import '../../../models/_models.dart';
 import 'i_websocket_service.dart';
 
 class WebSocketService extends IWebSocketService {
-  static const _channel = 'wss://nbstream.binance.com/eoptions/stream';
+  static const _channel = 'wss://ws-api.binance.com:443/ws-api/v3';
   final _log = getLogger('WebSocketService');
 
-  StreamSubscription<ConnectionState>? _connectionStateSS;
-  StreamSubscription<dynamic>? _messageSS;
+  StreamSubscription<dynamic>? _tickerSS;
+  StreamSubscription<dynamic>? _klinesSS;
 
   final StreamController<TickerData> _tickerDataSC =
       StreamController<TickerData>.broadcast();
-  final StreamController<CandleData> _candleDataSC =
-      StreamController<CandleData>.broadcast();
+  final StreamController<List<CandleData>> _candleDataSC =
+      StreamController<List<CandleData>>.broadcast();
 
-  WebSocket? _socket;
-  WebSocketChannel? _socketChannel;
+  WebSocketChannel? _tickerSocket;
+  WebSocketChannel? _klinesSocket;
 
   @override
   Future<void> init(String symbol) async {
     try {
       final wsUrl = Uri.parse(_channel);
-      // _socket = WebSocket(wsUrl);
-      _socketChannel = WebSocketChannel.connect(wsUrl);
+      _tickerSocket = WebSocketChannel.connect(wsUrl);
+      _klinesSocket = WebSocketChannel.connect(wsUrl);
 
-      _connectionStateSS = _socket?.connection.listen((event) {
-        _log.d(event);
-      });
+      await _tickerSocket?.ready;
+      await _klinesSocket?.ready;
 
-      await _socketChannel?.ready;
-
-      _messageSS = _socket?.messages.listen((message) {
+      _tickerSS = _tickerSocket?.stream.listen((message) {
         try {
           _log.w(message);
           message = jsonDecode(message);
-          if (message?['data']?['e'] == 'kline') {
-            _candleDataSC.add(CandleData.fromJson(message['data']));
-          }
-          if (message?['data']?['e'] == '24hrTicker') {
-            _tickerDataSC.add(TickerData.fromJson(message['data']));
-          }
+          _tickerDataSC.add(TickerData.fromJson(message['result']));
         } catch (e) {
-          _log.e('Socket Error: $e');
+          _log.e('Ticker SS Error: $e');
         }
       });
 
-      _messageSS ??= _socketChannel?.stream.listen((message) {
+      _klinesSS = _klinesSocket?.stream.listen((message) {
         try {
-          _log.w(message);
+          _log.w('Instance of KLINESSS');
           message = jsonDecode(message);
-          if (message?['data']?['e'] == 'kline') {
-            _candleDataSC.add(CandleData.fromJson(message['data']));
-          }
-          if (message?['data']?['e'] == '24hrTicker') {
-            _tickerDataSC.add(TickerData.fromJson(message['data']));
-          }
+          _candleDataSC.add((message?['result'] as List)
+              .map((e) => CandleData.fromJson(e))
+              .toList());
         } catch (e) {
-          _log.e('Socket Channel Error: $e');
+          _log.e('Klines SS Error: $e');
         }
       });
     } on Exception catch (e) {
@@ -73,29 +62,32 @@ class WebSocketService extends IWebSocketService {
   }
 
   @override
-  int subscribeToSymbol(String symbol, String interval) {
+  String subscribeToSymbol(String symbol, String interval) {
     final id = IdUtils.generateId();
-    _socket?.send(jsonEncode({
-      'method': 'SUBSCRIBE',
-      'params': ['$symbol@index', '$symbol@kline_$interval'],
+    _tickerSocket?.sink.add(jsonEncode({
       'id': id,
+      'method': 'ticker.24hr',
+      'params': {'symbol': symbol}
     }));
-    _socketChannel?.sink.add(jsonEncode({
-      'method': 'SUBSCRIBE',
-      'params': ['$symbol@ticker', '$symbol@kline_$interval'],
-      'id': 1,
+    _klinesSocket?.sink.add(jsonEncode({
+      'id': id,
+      'method': 'uiKlines',
+      'params': {
+        'symbol': symbol,
+        'interval': interval,
+      }
     }));
     return id;
   }
 
   @override
   void unsubscribeFromSymbol(int id, String symbol, String interval) {
-    _socket?.send({
+    _tickerSocket?.sink.add({
       'method': 'UNSUBSCRIBE',
       'params': ['$symbol@ticker', '$symbol@kline_$interval'],
       'id': id,
     });
-    _socketChannel?.sink.add({
+    _klinesSocket?.sink.add({
       'method': 'UNSUBSCRIBE',
       'params': ['$symbol@ticker', '$symbol@kline_$interval'],
       'id': 1,
@@ -104,14 +96,14 @@ class WebSocketService extends IWebSocketService {
 
   @override
   Future<void> dispose() async {
-    _socket?.close();
-    _socketChannel?.sink.close();
-    _connectionStateSS?.cancel();
-    _messageSS?.cancel();
+    _tickerSocket?.sink.close(normalClosure);
+    _klinesSocket?.sink.close(normalClosure);
+    _tickerSS?.cancel();
+    _klinesSS?.cancel();
   }
 
   @override
   Stream<TickerData> get tickerDataStream => _tickerDataSC.stream;
   @override
-  Stream<CandleData> get candleDataStream => _candleDataSC.stream;
+  Stream<List<CandleData>> get candleDataStream => _candleDataSC.stream;
 }

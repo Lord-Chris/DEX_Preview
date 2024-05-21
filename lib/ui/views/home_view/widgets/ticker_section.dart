@@ -37,7 +37,7 @@ class TickerSection extends ViewModelWidget<HomeViewModel> {
                 const Icon(CupertinoIcons.chevron_down, size: 14),
                 Spacing.horizLarge(),
                 Text(
-                  r'$20,634',
+                  '\$${tickerData?.lastPrice}',
                   style: AppTextStyles.medium18.copyWith(
                     color: AppColors.green,
                   ),
@@ -64,13 +64,13 @@ class TickerSection extends ViewModelWidget<HomeViewModel> {
                     ExchangeDetail(
                       icon: CupertinoIcons.up_arrow,
                       title: '24h high',
-                      value: '${tickerData.highestPrice} +1.25%',
+                      value: '${tickerData.highPrice} +1.25%',
                     ),
                     const VerticalDivider(),
                     ExchangeDetail(
                       icon: CupertinoIcons.down_arrow,
                       title: '24h low',
-                      value: '${tickerData.lowestPrice} -1.25%',
+                      value: '${tickerData.lowPrice} -1.25%',
                     ),
                   ],
                 ),

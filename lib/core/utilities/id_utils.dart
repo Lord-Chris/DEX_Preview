@@ -1,7 +1,7 @@
+import 'package:uuid/uuid.dart';
+
 class IdUtils {
-  static int generateId() {
-    final now = DateTime.now();
-    return (now.millisecondsSinceEpoch -
-        DateTime(now.year, now.month, now.day).millisecondsSinceEpoch);
+  static String generateId() {
+    return const Uuid().v4();
   }
 }

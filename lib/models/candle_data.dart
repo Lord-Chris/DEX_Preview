@@ -1,129 +1,85 @@
-import 'dart:math';
-
+// {
+//   "id": "b137468a-fb20-4c06-bd6b-625148eec958",
+//   "status": 200,
+//   "result": [
+//     [
+//       1655971200000,      // Kline open time
+//       "0.01086000",       // Open price
+//       "0.01086600",       // High price
+//       "0.01083600",       // Low price
+//       "0.01083800",       // Close price
+//       "2290.53800000",    // Volume
+//       1655974799999,      // Kline close time
+//       "24.85074442",      // Quote asset volume
+//       2283,               // Number of trades
+//       "1171.64000000",    // Taker buy base asset volume
+//       "12.71225884",      // Taker buy quote asset volume
+//       "0"                 // Unused field, ignore
+//     ]
+//   ],
+//   "rateLimits": [
+//     {
+//       "rateLimitType": "REQUEST_WEIGHT",
+//       "interval": "MINUTE",
+//       "intervalNum": 1,
+//       "limit": 6000,
+//       "count": 2
+//     }
+//   ]
+// }
 import 'package:candlesticks/candlesticks.dart';
 
 class CandleData {
-  String eventType;
-  int eventTime;
-  String tradingSymbol;
-  KlineData klineData;
+  final int openTime;
+  final double open;
+  final double high;
+  final double low;
+  final double close;
+  final double volume;
+  final int closeTime;
+  final double quoteAssetVolume;
+  final int numberOfTrades;
+  final double takerBuyBaseAssetVolume;
+  final double takerBuyQuoteAssetVolume;
 
   CandleData({
-    required this.eventType,
-    required this.eventTime,
-    required this.tradingSymbol,
-    required this.klineData,
+    required this.openTime,
+    required this.open,
+    required this.high,
+    required this.low,
+    required this.close,
+    required this.volume,
+    required this.closeTime,
+    required this.quoteAssetVolume,
+    required this.numberOfTrades,
+    required this.takerBuyBaseAssetVolume,
+    required this.takerBuyQuoteAssetVolume,
   });
 
-  factory CandleData.fromJson(Map<String, dynamic> json) {
+  factory CandleData.fromJson(List<dynamic> json) {
     return CandleData(
-      eventType: json['e'],
-      eventTime: json['E'],
-      tradingSymbol: json['s'],
-      klineData: KlineData.fromJson(json['k']),
+      openTime: json[0],
+      open: double.parse(json[1]),
+      high: double.parse(json[2]),
+      low: double.parse(json[3]),
+      close: double.parse(json[4]),
+      volume: double.parse(json[5]),
+      closeTime: json[6],
+      quoteAssetVolume: double.parse(json[7]),
+      numberOfTrades: json[8],
+      takerBuyBaseAssetVolume: double.parse(json[9]),
+      takerBuyQuoteAssetVolume: double.parse(json[10]),
     );
   }
 
   Candle toCandle() {
     return Candle(
-      date: DateTime.fromMillisecondsSinceEpoch(klineData.endTime),
-      high:
-          klineData.high == klineData.low ? klineData.high + 1 : klineData.high,
-      low: klineData.low,
-      open: klineData.open,
-      close: klineData.close,
-      volume: klineData.volume == 0
-          ? Random().nextDouble() * 1000
-          : klineData.volume,
-    );
-  }
-
-  factory CandleData.fromJson2(Map<String, dynamic> json) {
-    return CandleData(
-      eventType: 'kline',
-      eventTime: json['closeTime'],
-      tradingSymbol: json['symbol'],
-      klineData: KlineData.fromJson2(json),
-    );
-  }
-}
-
-class KlineData {
-  int startTime;
-  int endTime;
-  String tradingSymbol;
-  String candlePeriod;
-  int firstTradeId;
-  int lastTradeId;
-  double open;
-  double close;
-  double high;
-  double low;
-  double volume;
-  int numberOfTrades;
-  bool isCompleted;
-  double completedTradeAmount;
-  double takerCompletedTradeVolume;
-  double takerTradeAmount;
-
-  KlineData({
-    required this.startTime,
-    required this.endTime,
-    required this.tradingSymbol,
-    required this.candlePeriod,
-    required this.firstTradeId,
-    required this.lastTradeId,
-    required this.open,
-    required this.close,
-    required this.high,
-    required this.low,
-    required this.volume,
-    required this.numberOfTrades,
-    required this.isCompleted,
-    required this.completedTradeAmount,
-    required this.takerCompletedTradeVolume,
-    required this.takerTradeAmount,
-  });
-
-  factory KlineData.fromJson(Map<String, dynamic> json) {
-    return KlineData(
-      startTime: json['t'],
-      endTime: json['T'],
-      tradingSymbol: json['s'],
-      candlePeriod: json['i'],
-      firstTradeId: int.parse(json['F']),
-      lastTradeId: int.parse(json['L']),
-      open: double.parse(json['o']),
-      close: double.parse(json['c']),
-      high: double.parse(json['h']),
-      low: double.parse(json['l']),
-      volume: double.parse(json['v']),
-      numberOfTrades: json['n'],
-      isCompleted: json['x'],
-      completedTradeAmount: double.parse(json['q']),
-      takerCompletedTradeVolume: double.parse(json['V']),
-      takerTradeAmount: double.parse(json['Q']),
-    );
-  }
-
-  factory KlineData.fromJson2(Map<String, dynamic> json) {
-    return KlineData(
-      startTime: json['openTime'],
-      endTime: json['closeTime'],
-      tradingSymbol: json['symbol'],
-      candlePeriod: json['interval'],
-      firstTradeId: 0,
-      lastTradeId: 0,
-      open: double.parse(json['open']),
-      close: double.parse(json['close']),
-      high: double.parse(json['high']),
-      low: double.parse(json['low']),
-      volume: double.parse(json['volume']),
-      numberOfTrades: json['tradeCount'],
-      isCompleted: true,
-      completedTradeAmount: double.parse(json['amount']),
-      takerCompletedTradeVolume: double.parse(json['takerVolume']),
-      takerTradeAmount: double.parse(json['takerAmount']),
+      date: DateTime.fromMillisecondsSinceEpoch(openTime),
+      open: open,
+      high: high,
+      low: low,
+      close: close,
+      volume: volume,
     );
   }
 }
