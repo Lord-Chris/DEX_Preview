@@ -20,9 +20,8 @@ The DEX Preview mobile app is built using the following technologies:
 
 ## Video Demo
 
-
 https://github.com/Lord-Chris/DEX_Preview/assets/58702861/c5bd4b53-8b72-4691-82d6-5b5d51b3a6d7
 
-
+High Quality Video Link: https://drive.google.com/file/d/1nIj6kiwUzfx6243YwGiOHjls6OJ4WOmU/view?usp=sharing
 
 
