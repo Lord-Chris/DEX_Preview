@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
@@ -14,7 +13,7 @@ class HomeViewModel extends MultipleStreamViewModel {
   final _binanceService = locator<IBinanceService>();
   final _log = getLogger('HomeViewModel');
 
-  String _symbol = 'BTCUSDT';
+  final String _symbol = 'BTCUSDT';
   ChartIntervalEnum _interval = ChartIntervalEnum.oneSecond;
   MainViewEnum mainView = MainViewEnum.charts;
   List<CandleData> _candles = [];
@@ -65,19 +64,6 @@ class HomeViewModel extends MultipleStreamViewModel {
       _log.e(e);
     } finally {
       setBusy(false);
-    }
-  }
-
-  Future<void> fetchSymbols() async {
-    try {
-      final symbols = await _binanceService.fetchSymbols();
-      if (symbols.isEmpty) return;
-      _symbol = (symbols.firstWhereOrNull((e) => e.symbol.startsWith('BTC')) ??
-              symbols.first)
-          .symbol;
-      notifyListeners();
-    } on IFailure catch (e) {
-      _log.e(e);
     }
   }
 

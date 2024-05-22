@@ -5,18 +5,9 @@ import 'i_binance_service.dart';
 
 /// A service class that interacts with the Binance API to fetch symbol and candle data.
 class BinanceService extends IBinanceService {
+  /// The base URL for the Binance API.
   static const _baseUrl = 'https://api.binance.com/api/v3';
   final _networkService = locator<INetworkService>();
-
-  /// Fetches a list of symbol data from the Binance API.
-  ///
-  /// Returns a list of [SymbolData] objects.
-  @override
-  Future<List<SymbolData>> fetchSymbols() async {
-    const uri = '$_baseUrl/ticker';
-    final res = await _networkService.get(uri);
-    return (res as List<dynamic>).map((e) => SymbolData.fromJson(e)).toList();
-  }
 
   /// Fetches a list of candle data for a specific symbol and interval from the Binance API.
   ///
@@ -26,11 +17,17 @@ class BinanceService extends IBinanceService {
   /// Returns a list of [CandleData] objects.
   @override
   Future<List<CandleData>> fetchCandles(String symbol, String interval) async {
-    final uri = '$_baseUrl/klines?symbol=$symbol&interval=$interval';
-    final res = await _networkService.get(uri);
+    try {
+      final uri = '$_baseUrl/klines?symbol=$symbol&interval=$interval';
+      final res = await _networkService.get(uri);
 
-    return (res as List<dynamic>)
-        .map((e) => CandleData.fromBinanceJson(e, interval, symbol))
-        .toList();
+      return (res as List<dynamic>)
+          .map((e) => CandleData.fromBinanceJson(e, interval, symbol))
+          .toList();
+    } on IFailure {
+      rethrow;
+    } catch (e) {
+      throw Failure(message: e.toString());
+    }
   }
 }

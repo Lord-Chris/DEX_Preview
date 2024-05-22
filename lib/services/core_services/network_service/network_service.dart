@@ -7,18 +7,27 @@ import '../../../models/_models.dart';
 import 'i_network_service.dart';
 
 class NetworkService extends INetworkService {
-  Dio _dio = Dio();
+  final Dio _dio;
+
+  NetworkService([Dio? dio]) : _dio = dio ?? _createDio();
 
   final _headers = {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
   };
 
-  NetworkService() {
-    _dio = Dio();
-    _dio.options.receiveTimeout = const Duration(seconds: 60);
-    _dio.options.sendTimeout = const Duration(seconds: 60);
-    _dio.interceptors.addAll([NetworkLoggerInterceptor()]);
+  static Dio _createDio() {
+    return Dio()
+      ..options.responseType = ResponseType.json
+      ..httpClientAdapter
+      ..options.headers = {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'request-origin': 'mobile-app',
+        'Connection': 'keep-alive',
+      }
+      ..interceptors.addAll([
+        NetworkLoggerInterceptor(),
+      ]);
   }
 
   @override
