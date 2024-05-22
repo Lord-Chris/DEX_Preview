@@ -14,6 +14,7 @@ class AppSvgAssets {
   static const arrangement1 = '$_prefix/arrangement1.svg';
   static const arrangement2 = '$_prefix/arrangement2.svg';
   static const arrangement3 = '$_prefix/arrangement3.svg';
+  static const candleChart = '$_prefix/candle_chart.svg';
 }
 
 class AppImgAssets {

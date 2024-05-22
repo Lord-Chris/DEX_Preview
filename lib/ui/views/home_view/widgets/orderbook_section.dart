@@ -39,11 +39,12 @@ class OrderbookSection extends ViewModelWidget<HomeViewModel> {
               const Spacer(),
               PopupMenuButton(
                 itemBuilder: (itemBuilder) {
-                  return [
-                    const PopupMenuItem(child: Text('10')),
-                    const PopupMenuItem(child: Text('20')),
-                    const PopupMenuItem(child: Text('30')),
-                  ];
+                  return ['5', '10', '20']
+                      .map((e) => PopupMenuItem(
+                            child: Text(e),
+                            onTap: () => viewModel.setDepth(e),
+                          ))
+                      .toList();
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -57,7 +58,7 @@ class OrderbookSection extends ViewModelWidget<HomeViewModel> {
                   child: Row(
                     children: [
                       Text(
-                        '10',
+                        viewModel.depth.toString(),
                         style: AppTextStyles.medium12.copyWith(
                           color: context.cScheme.onBackground,
                         ),

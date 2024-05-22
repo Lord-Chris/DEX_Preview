@@ -1,3 +1,4 @@
+export 'enums/chart_interval_enum.dart';
 export 'enums/main_view_enum.dart';
 export 'enums/orders_view_enum.dart';
 

@@ -15,19 +15,22 @@ class HomeViewModel extends MultipleStreamViewModel {
   final _log = getLogger('HomeViewModel');
 
   String _symbol = 'BTCUSDT';
-  String _interval = '1s';
+  ChartIntervalEnum _interval = ChartIntervalEnum.oneSecond;
   MainViewEnum mainView = MainViewEnum.charts;
   List<CandleData> _candles = [];
   ValueNotifier<TickerData?> tickerData = ValueNotifier(null);
   OrdersViewEnum ordersView = OrdersViewEnum.openOrders;
   int arrangement = 0;
   OrderbookData? orderbookData;
+  String _depth = '5';
 
-  void setInterval(String value) {
+  void setInterval(ChartIntervalEnum value) {
+    _unsubscribeFromSymbol();
     _interval = value;
-    notifyListeners();
     _candles.clear();
-    // fetchCandles();
+    notifyListeners();
+    fetchCandles();
+    _subscribeToSymbol();
   }
 
   void setMainView(MainViewEnum value) {
@@ -45,13 +48,19 @@ class HomeViewModel extends MultipleStreamViewModel {
     notifyListeners();
   }
 
+  void setDepth(String value) {
+    _unsubscribeFromSymbol();
+    _depth = value;
+    notifyListeners();
+    _subscribeToSymbol();
+  }
+
   Future<void> init() async {
     try {
       setBusy(true);
-      await _webSsocketService.init(_symbol);
-      // await fetchSymbols();
+      await _webSsocketService.init();
       await fetchCandles();
-      subscribeToSymbol();
+      _subscribeToSymbol();
     } on IFailure catch (e) {
       _log.e(e);
     } finally {
@@ -69,13 +78,18 @@ class HomeViewModel extends MultipleStreamViewModel {
   }
 
   Future<void> fetchCandles() async {
-    final candles = await _binanceService.fetchCandles(_symbol, _interval);
+    final candles =
+        await _binanceService.fetchCandles(_symbol, _interval.value);
     _candles = [..._candles, ...candles];
     notifyListeners();
   }
 
-  Future<void> subscribeToSymbol() async {
-    _webSsocketService.subscribeToSymbol(_symbol, _interval);
+  void _subscribeToSymbol() {
+    _webSsocketService.subscribeToSymbol(_symbol, _interval.value, _depth);
+  }
+
+  void _unsubscribeFromSymbol() {
+    _webSsocketService.unsubscribeFromSymbol(_symbol, _interval.value, _depth);
   }
 
   void openCreateOrderSheet() {
@@ -93,7 +107,6 @@ class HomeViewModel extends MultipleStreamViewModel {
 
   @override
   void onData(String key, data) {
-    super.onData(key, data);
     if (key == 'candleDataStream') {
       _candles.insertAll(0, data);
     }
@@ -117,4 +130,6 @@ class HomeViewModel extends MultipleStreamViewModel {
 
   String get symbol => _symbol;
   List<CandleData> get candles => _candles;
+  ChartIntervalEnum get interval => _interval;
+  String get depth => _depth;
 }
