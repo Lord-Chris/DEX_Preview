@@ -11,6 +11,9 @@ class AppSvgAssets {
   static const expand = '$_prefix/expand.svg';
   static const globe = '$_prefix/globe.svg';
   static const menu = '$_prefix/menu.svg';
+  static const arrangement1 = '$_prefix/arrangement1.svg';
+  static const arrangement2 = '$_prefix/arrangement2.svg';
+  static const arrangement3 = '$_prefix/arrangement3.svg';
 }
 
 class AppImgAssets {

@@ -20,6 +20,7 @@ class HomeViewModel extends MultipleStreamViewModel {
   List<CandleData> _candles = [];
   ValueNotifier<TickerData?> tickerData = ValueNotifier(null);
   OrdersViewEnum ordersView = OrdersViewEnum.openOrders;
+  int arrangement = 0;
 
   void setInterval(String value) {
     _interval = value;
@@ -35,6 +36,11 @@ class HomeViewModel extends MultipleStreamViewModel {
 
   void setOrdersView(OrdersViewEnum value) {
     ordersView = value;
+    notifyListeners();
+  }
+
+  void setArrangement(int index) {
+    arrangement = index;
     notifyListeners();
   }
 

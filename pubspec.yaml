@@ -30,13 +30,15 @@ environment:
 dependencies:
   candlesticks: ^2.1.0
   collection: ^1.18.0
+  crypto_market: null
   cupertino_icons: ^1.0.6
   dio: ^5.4.3+1
   flutter:
     sdk: flutter
   flutter_hooks: ^0.20.5
-  flutter_svg: ^2.0.10+1
+  flutter_svg: null
   logger: ^2.3.0
+  order_book: ^0.0.3
   stacked: ^3.4.2
   stacked_services: ^1.5.0
   uuid: ^4.4.0

@@ -60,14 +60,18 @@ class HomeView extends StatelessWidget {
             return ListView(
               padding: const EdgeInsets.symmetric(vertical: 8),
               children: [
+                Divider(thickness: 8, color: context.cScheme.secondary),
                 const TickerSection(),
+                Divider(thickness: 8, color: context.cScheme.secondary),
                 Spacing.vertSmall(),
                 const RatesSection(),
+                Divider(thickness: 8, color: context.cScheme.secondary),
                 Spacing.vertSmall(),
                 const OrdersSection(),
                 Spacing.vertLarge(),
+                Divider(thickness: 48, color: context.cScheme.secondary),
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
                   child: Row(
                     children: [
                       Expanded(
@@ -90,7 +94,7 @@ class HomeView extends StatelessWidget {
                     ],
                   ),
                 ),
-                Spacing.vertLarge(),
+                Divider(thickness: 32, color: context.cScheme.secondary),
               ],
             );
           }),
