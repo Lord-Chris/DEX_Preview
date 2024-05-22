@@ -21,6 +21,8 @@ The DEX Preview mobile app is built using the following technologies:
 ## Video Demo
 
 
-Uploading Screen Recording 2024-05-22 at 13.58.58.mov…
+https://github.com/Lord-Chris/DEX_Preview/assets/58702861/c5bd4b53-8b72-4691-82d6-5b5d51b3a6d7
+
+
 
 
