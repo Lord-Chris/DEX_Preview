@@ -44,7 +44,10 @@ class CreateOrderSheet extends StatelessWidget {
                           .map((filter) => Expanded(
                                 child: SectionItem(
                                   label: filter,
-                                  activeBorderColor: AppColors.green,
+                                  activeBorderColor:
+                                      viewModel.orderType == 'Buy'
+                                          ? AppColors.green
+                                          : AppColors.red,
                                   isActive: viewModel.orderType == filter,
                                   onTap: () => viewModel.setOrdertype(filter),
                                 ),

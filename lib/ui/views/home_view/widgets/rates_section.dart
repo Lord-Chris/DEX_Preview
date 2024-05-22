@@ -16,7 +16,7 @@ class RatesSection extends ViewModelWidget<HomeViewModel> {
   @override
   Widget build(BuildContext context, HomeViewModel viewModel) {
     return Container(
-      height: 400,
+      height: 450,
       color: context.cScheme.background,
       child: Column(
         children: [

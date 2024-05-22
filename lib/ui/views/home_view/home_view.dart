@@ -89,7 +89,7 @@ class HomeView extends StatelessWidget {
                       Expanded(
                         child: AppButton(
                           label: 'Sell',
-                          onPressed: () {},
+                          onPressed: viewModel.openCreateOrderSheet,
                           buttonColor: AppColors.red,
                           labelColor: AppColors.white,
                         ),

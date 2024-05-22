@@ -43,4 +43,7 @@ class OrderItemData {
   String get total =>
       (double.parse(price) * double.parse(quantity)).toStringAsFixed(2);
   String get formattedPrice => double.parse(price).toStringAsFixed(2);
+
+  double get ratio => (double.parse(total) / double.parse(price));
+  double get ratioPercent => ratio * 100;
 }

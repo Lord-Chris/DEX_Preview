@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../../core/_core.dart';
+import '../../../../models/_models.dart';
 import '../../../shared/_shared.dart';
 import '../home_viewmodel.dart';
 
@@ -141,183 +142,138 @@ class OrderbookSection extends ViewModelWidget<HomeViewModel> {
                   ],
                 ),
                 Spacing.vertSmall(),
-                ListView.builder(
-                  padding: EdgeInsets.zero,
-                  itemCount: viewModel.orderbookData?.bids.length ?? 0,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    final data = viewModel.orderbookData?.bids[index];
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 2),
-                      child: Stack(
-                        children: [
-                          Row(
-                            children: [
-                              const Spacer(flex: 2),
-                              Expanded(
-                                flex: 5,
-                                child: LayoutBuilder(
-                                  builder: (context, constraints) {
-                                    return Align(
-                                      alignment: Alignment.centerRight,
-                                      child: Container(
-                                        height: 20,
-                                        width: constraints.maxWidth / 1.5,
-                                        color: AppColors.red.withOpacity(.15),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Spacing.horizRegular(),
-                              Expanded(
-                                flex: 2,
-                                child: Text(
-                                  data?.formattedPrice ?? '0',
-                                  style: AppTextStyles.medium12.copyWith(
-                                    color: AppColors.red,
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: Text(
-                                  data?.quantity ?? '0',
-                                  textAlign: TextAlign.end,
-                                  style: AppTextStyles.medium12.copyWith(
-                                    color: context.cScheme.onBackground,
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 3,
-                                child: Text(
-                                  data?.total ?? '0',
-                                  textAlign: TextAlign.end,
-                                  style: AppTextStyles.medium12.copyWith(
-                                    color: context.cScheme.onBackground,
-                                  ),
-                                ),
-                              ),
-                              Spacing.horizRegular(),
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+                _buildItems(
+                  viewModel.orderbookData?.bids ?? [],
+                  true,
                 ),
                 Spacing.vertSmall(),
 
                 ///
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '36,641.20',
-                      style: AppTextStyles.medium16.copyWith(
+                Builder(builder: (context) {
+                  double askTotal = 0.0;
+                  double bidTotal = 0.0;
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        viewModel.orderbookData?.asks
+                                .fold(askTotal,
+                                    (prev, e) => prev + double.parse(e.total))
+                                .toStringAsFixed(2) ??
+                            '0',
+                        style: AppTextStyles.medium16.copyWith(
+                          color: AppColors.green,
+                        ),
+                      ),
+                      Spacing.horizRegular(),
+                      const Icon(
+                        CupertinoIcons.up_arrow,
                         color: AppColors.green,
+                        size: 16,
                       ),
-                    ),
-                    Spacing.horizRegular(),
-                    const Icon(
-                      CupertinoIcons.up_arrow,
-                      color: AppColors.green,
-                      size: 16,
-                    ),
-                    Spacing.horizRegular(),
-                    Text(
-                      '36,641.20',
-                      style: AppTextStyles.medium16.copyWith(
-                        color: context.cScheme.onBackground,
+                      Spacing.horizRegular(),
+                      Text(
+                        viewModel.orderbookData?.bids
+                                .fold(bidTotal,
+                                    (prev, e) => prev + double.parse(e.total))
+                                .toStringAsFixed(2) ??
+                            '0',
+                        style: AppTextStyles.medium16.copyWith(
+                          color: context.cScheme.onBackground,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  );
+                }),
                 Spacing.vertSmall(),
-                ListView.builder(
-                  padding: EdgeInsets.zero,
-                  itemCount: viewModel.orderbookData?.asks.length ?? 0,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    final data = viewModel.orderbookData?.asks[index];
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 2),
-                      child: Stack(
-                        children: [
-                          Row(
-                            children: [
-                              const Spacer(flex: 2),
-                              Expanded(
-                                flex: 5,
-                                child: LayoutBuilder(
-                                  builder: (context, constraints) {
-                                    return Align(
-                                      alignment: Alignment.centerRight,
-                                      child: Container(
-                                        height: 20,
-                                        width: constraints.maxWidth / 1.5,
-                                        color: AppColors.green.withOpacity(.15),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Spacing.horizRegular(),
-                              Expanded(
-                                flex: 2,
-                                child: Text(
-                                  data?.formattedPrice ?? '0',
-                                  style: AppTextStyles.medium12.copyWith(
-                                    color: AppColors.green,
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: Text(
-                                  data?.quantity ?? '0',
-                                  textAlign: TextAlign.end,
-                                  style: AppTextStyles.medium12.copyWith(
-                                    color: context.cScheme.onBackground,
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 3,
-                                child: Text(
-                                  data?.total ?? '0',
-                                  textAlign: TextAlign.end,
-                                  style: AppTextStyles.medium12.copyWith(
-                                    color: context.cScheme.onBackground,
-                                  ),
-                                ),
-                              ),
-                              Spacing.horizRegular(),
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+                _buildItems(
+                  viewModel.orderbookData?.asks ?? [],
+                  false,
                 ),
               ],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  ListView _buildItems(
+    List<OrderItemData> items,
+    bool isBid,
+  ) {
+    final color = isBid ? AppColors.red : AppColors.green;
+    return ListView.builder(
+      padding: EdgeInsets.zero,
+      itemCount: items.length,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemBuilder: (context, index) {
+        final data = items[index];
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 2),
+          child: Stack(
+            children: [
+              Row(
+                children: [
+                  const Spacer(flex: 2),
+                  Expanded(
+                    flex: 5,
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        return Align(
+                          alignment: Alignment.centerRight,
+                          child: Container(
+                            height: 20,
+                            width: constraints.maxWidth * data.ratioPercent,
+                            color: color.withOpacity(.15),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Spacing.horizRegular(),
+                  Expanded(
+                    flex: 2,
+                    child: Text(
+                      data.formattedPrice,
+                      style: AppTextStyles.medium12.copyWith(
+                        color: color,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: Text(
+                      data.quantity,
+                      textAlign: TextAlign.end,
+                      style: AppTextStyles.medium12.copyWith(
+                        color: context.cScheme.onBackground,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: Text(
+                      data.total,
+                      textAlign: TextAlign.end,
+                      style: AppTextStyles.medium12.copyWith(
+                        color: context.cScheme.onBackground,
+                      ),
+                    ),
+                  ),
+                  Spacing.horizRegular(),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
