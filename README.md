@@ -13,9 +13,14 @@ The DEX Preview mobile app is built using the following technologies:
 
 - [Flutter](https://flutter.dev/), a cross-platform mobile development framework by Google.
 - [Binance WebSocket API] (https://binance-docs.github.io/apidocs/spot/en) for realtime data.
+- State Managment - Stacked Architecture[Provider].
 
 
 **DEX Preview can be previewed on iOS and Android.*
 
 ## Video Demo
+
+
+Uploading Screen Recording 2024-05-22 at 13.58.58.mov…
+
 
