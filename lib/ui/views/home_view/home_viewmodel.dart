@@ -69,19 +69,27 @@ class HomeViewModel extends MultipleStreamViewModel {
   }
 
   Future<void> fetchSymbols() async {
-    final symbols = await _binanceService.fetchSymbols();
-    if (symbols.isEmpty) return;
-    _symbol = (symbols.firstWhereOrNull((e) => e.symbol.startsWith('BTC')) ??
-            symbols.first)
-        .symbol;
-    notifyListeners();
+    try {
+      final symbols = await _binanceService.fetchSymbols();
+      if (symbols.isEmpty) return;
+      _symbol = (symbols.firstWhereOrNull((e) => e.symbol.startsWith('BTC')) ??
+              symbols.first)
+          .symbol;
+      notifyListeners();
+    } on IFailure catch (e) {
+      _log.e(e);
+    }
   }
 
   Future<void> fetchCandles() async {
-    final candles =
-        await _binanceService.fetchCandles(_symbol, _interval.value);
-    _candles = [..._candles, ...candles];
-    notifyListeners();
+    try {
+      final candles =
+          await _binanceService.fetchCandles(_symbol, _interval.value);
+      _candles = [..._candles, ...candles.reversed];
+      notifyListeners();
+    } on IFailure catch (e) {
+      _log.e(e);
+    }
   }
 
   void _subscribeToSymbol() {

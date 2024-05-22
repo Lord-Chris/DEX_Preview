@@ -12,7 +12,6 @@ import '../../ui/views/home_view/home_view.dart';
   routes: [
     /// Startup
     AdaptiveRoute(page: HomeView, initial: true),
-    // AdaptiveRoute(page: OnboardingView),
   ],
   logger: StackedLogger(),
   dependencies: [

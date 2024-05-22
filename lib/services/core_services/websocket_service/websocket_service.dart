@@ -35,7 +35,7 @@ class WebSocketService extends IWebSocketService {
 
       _klinesSS = _klinesSocket?.stream.listen((message) {
         try {
-          _log.w('Instance of KLINESSS: $message');
+          _log.w('Instance of Message: $message');
           message = jsonDecode(message);
           if (message['data']?['e'] == '24hrTicker') {
             _tickerDataSC.add(TickerData.fromJson(message['data']));
@@ -80,56 +80,30 @@ class WebSocketService extends IWebSocketService {
     return _id!;
   }
 
-  // @override
-  // String reSubscribeToSymbol({
-  //   String? symbol,
-  //   String? interval,
-  //   String? depth,
-  // }) {
-  //   symbol = symbol?.toLowerCase();
-  //   _klinesSocket?.sink.add({
-  //     'method': 'UNSUBSCRIBE',
-  //     'params': [
-  //       '$symbol@ticker',
-  //       if (interval != null) '$symbol@kline_$interval',
-  //         if (depth != null) '$symbol@depth$depth',
-  //     ],
-  //     'id': 312,
-  //   });
-  //   _klinesSocket?.sink.add(
-  //     jsonEncode({
-  //       'method': 'SUBSCRIBE',
-  //       'params': [
-  //         '$symbol@ticker',
-  //         if (interval != null) '$symbol@kline_$interval',
-  //         if (depth != null) '$symbol@depth$depth',
-  //       ],
-  //       'id': 1,
-  //     }),
-  //   );
-
-  //   return id;
-  // }
-
   @override
-  void unsubscribeFromSymbol(
+  Future<void> unsubscribeFromSymbol(
     String symbol,
     String interval,
     String depth,
-  ) {
-    if (_id == null) return;
-    symbol = symbol.toLowerCase();
-    _klinesSocket?.sink.add({
-      'method': 'UNSUBSCRIBE',
-      'params': [
-        '$symbol@ticker',
-        '$symbol@kline_$interval',
-        '$symbol@depth$depth',
-      ],
-      'id': _id,
-    });
+  ) async {
+    try {
+      if (_id == null) return;
+      symbol = symbol.toLowerCase();
+      _klinesSocket?.sink.add({
+        'method': 'UNSUBSCRIBE',
+        'params': [
+          '$symbol@ticker',
+          '$symbol@kline_$interval',
+          '$symbol@depth$depth',
+        ],
+        'id': _id,
+      });
 
-    init();
+      await init();
+    } catch (e) {
+      _log.e(e);
+      throw CoreFailure(data: e);
+    }
   }
 
   @override
