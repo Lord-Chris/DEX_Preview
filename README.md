@@ -1,16 +1,21 @@
-# dao_preview
+# DEX Preview
+DEX Preview is a mobile app that allows users to preview the latest digital assets on the DEX platform. Users can view the latest digital assets, search for specific assets, and view detailed information about each asset.
 
-A new Flutter project.
+## Features
+- View BTCUSDT ticker information.
+- Interactive klines chart for BTCUSDT.
+- Interactive orderbook for BTCUSDT.
+- Light and dark Theme modes
+- Responsive UI
 
-## Getting Started
+## Mobile App
+The DEX Preview mobile app is built using the following technologies:
 
-This project is a starting point for a Flutter application.
+- [Flutter](https://flutter.dev/), a cross-platform mobile development framework by Google.
+- [Binance WebSocket API] (https://binance-docs.github.io/apidocs/spot/en) for realtime data.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+**DEX Preview can be previewed on iOS and Android.*
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Video Demo
+
