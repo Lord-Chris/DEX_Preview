@@ -1,73 +1,106 @@
+final mockTickerData = {
+  'e': '24hrTicker', // Event type
+  'E': 1672515782136, // Event time
+  's': 'BNBBTC', // Symbol
+  'p': '0.0015', // Price change
+  'P': '250.00', // Price change percent
+  'w': '0.0018', // Weighted average price
+  'x':
+      '0.0009', // First trade(F)-1 price (first trade before the 24hr rolling window)
+  'c': '0.0025', // Last price
+  'Q': '10', // Last quantity
+  'b': '0.0024', // Best bid price
+  'B': '10', // Best bid quantity
+  'a': '0.0026', // Best ask price
+  'A': '100', // Best ask quantity
+  'o': '0.0010', // Open price
+  'h': '0.0025', // High price
+  'l': '0.0010', // Low price
+  'v': '10000', // Total traded base asset volume
+  'q': '18', // Total traded quote asset volume
+  'O': 0, // Statistics open time
+  'C': 86400000, // Statistics close time
+  'F': 0, // First trade ID
+  'L': 18150, // Last trade Id
+  'n': 18151 // Total number of trades
+};
+
 class TickerData {
+  final String eventType;
+  final int eventTime;
   final String symbol;
   final double priceChange;
   final double priceChangePercent;
-  final double weightedAvgPrice;
-  final double prevClosePrice;
+  final double weightedAveragePrice;
+  final double firstTradePrice;
   final double lastPrice;
-  final double lastQty;
-  final double bidPrice;
-  final double bidQty;
-  final double askPrice;
-  final double askQty;
+  final double lastQuantity;
+  final double bestBidPrice;
+  final double bestBidQuantity;
+  final double bestAskPrice;
+  final double bestAskQuantity;
   final double openPrice;
   final double highPrice;
   final double lowPrice;
-  final double volume;
-  final double quoteVolume;
-  final int openTime;
-  final int closeTime;
-  final int firstId;
-  final int lastId;
-  final int count;
+  final double totalTradedBaseAssetVolume;
+  final double totalTradedQuoteAssetVolume;
+  final int statisticsOpenTime;
+  final int statisticsCloseTime;
+  final int firstTradeId;
+  final int lastTradeId;
+  final int totalNumberOfTrades;
 
   TickerData({
+    required this.eventType,
+    required this.eventTime,
     required this.symbol,
     required this.priceChange,
     required this.priceChangePercent,
-    required this.weightedAvgPrice,
-    required this.prevClosePrice,
+    required this.weightedAveragePrice,
+    required this.firstTradePrice,
     required this.lastPrice,
-    required this.lastQty,
-    required this.bidPrice,
-    required this.bidQty,
-    required this.askPrice,
-    required this.askQty,
+    required this.lastQuantity,
+    required this.bestBidPrice,
+    required this.bestBidQuantity,
+    required this.bestAskPrice,
+    required this.bestAskQuantity,
     required this.openPrice,
     required this.highPrice,
     required this.lowPrice,
-    required this.volume,
-    required this.quoteVolume,
-    required this.openTime,
-    required this.closeTime,
-    required this.firstId,
-    required this.lastId,
-    required this.count,
+    required this.totalTradedBaseAssetVolume,
+    required this.totalTradedQuoteAssetVolume,
+    required this.statisticsOpenTime,
+    required this.statisticsCloseTime,
+    required this.firstTradeId,
+    required this.lastTradeId,
+    required this.totalNumberOfTrades,
   });
 
   factory TickerData.fromJson(Map<String, dynamic> json) {
     return TickerData(
-      symbol: json['symbol'],
-      priceChange: double.parse(json['priceChange']),
-      priceChangePercent: double.parse(json['priceChangePercent']),
-      weightedAvgPrice: double.parse(json['weightedAvgPrice']),
-      prevClosePrice: double.parse(json['prevClosePrice']),
-      lastPrice: double.parse(json['lastPrice']),
-      lastQty: double.parse(json['lastQty']),
-      bidPrice: double.parse(json['bidPrice']),
-      bidQty: double.parse(json['bidQty']),
-      askPrice: double.parse(json['askPrice']),
-      askQty: double.parse(json['askQty']),
-      openPrice: double.parse(json['openPrice']),
-      highPrice: double.parse(json['highPrice']),
-      lowPrice: double.parse(json['lowPrice']),
-      volume: double.parse(json['volume']),
-      quoteVolume: double.parse(json['quoteVolume']),
-      openTime: json['openTime'],
-      closeTime: json['closeTime'],
-      firstId: json['firstId'],
-      lastId: json['lastId'],
-      count: json['count'],
+      eventType: json['e'],
+      eventTime: json['E'],
+      symbol: json['s'],
+      priceChange: double.parse(json['p']),
+      priceChangePercent: double.parse(json['P']),
+      weightedAveragePrice: double.parse(json['w']),
+      firstTradePrice: double.parse(json['x']),
+      lastPrice: double.parse(json['c']),
+      lastQuantity: double.parse(json['Q']),
+      bestBidPrice: double.parse(json['b']),
+      bestBidQuantity: double.parse(json['B']),
+      bestAskPrice: double.parse(json['a']),
+      bestAskQuantity: double.parse(json['A']),
+      openPrice: double.parse(json['o']),
+      highPrice: double.parse(json['h']),
+      lowPrice: double.parse(json['l']),
+      totalTradedBaseAssetVolume: double.parse(json['v']),
+      totalTradedQuoteAssetVolume: double.parse(json['q']),
+      statisticsOpenTime: json['O'],
+      statisticsCloseTime: json['C'],
+      firstTradeId: json['F'],
+      lastTradeId: json['L'],
+      totalNumberOfTrades: json['n'],
     );
   }
 }

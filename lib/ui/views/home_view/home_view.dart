@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../core/_core.dart';
+import '../../../models/_models.dart';
 import '../../shared/_shared.dart';
 import 'home_viewmodel.dart';
 import 'widgets/orders_section.dart';
@@ -15,6 +16,8 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    CandleData.fromJson(mockCandleData['data']?['k'] ?? {});
+
     final controller = OverlayPortalController();
     return ViewModelBuilder<HomeViewModel>.reactive(
       viewModelBuilder: () => HomeViewModel(),

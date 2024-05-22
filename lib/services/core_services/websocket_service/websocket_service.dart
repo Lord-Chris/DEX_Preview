@@ -10,7 +10,7 @@ import '../../../models/_models.dart';
 import 'i_websocket_service.dart';
 
 class WebSocketService extends IWebSocketService {
-  static const _channel = 'wss://ws-api.binance.com:443/ws-api/v3';
+  static const _channel = 'wss://stream.binance.com:443/stream';
   final _log = getLogger('WebSocketService');
 
   StreamSubscription<dynamic>? _tickerSS;
@@ -32,9 +32,9 @@ class WebSocketService extends IWebSocketService {
   Future<void> init(String symbol) async {
     try {
       final wsUrl = Uri.parse(_channel);
-      _tickerSocket = WebSocketChannel.connect(wsUrl);
+      // _tickerSocket = WebSocketChannel.connect(wsUrl);
       _klinesSocket = WebSocketChannel.connect(wsUrl);
-      _orderbookSocket = WebSocketChannel.connect(wsUrl);
+      // _orderbookSocket = WebSocketChannel.connect(wsUrl);
 
       await _tickerSocket?.ready;
       await _klinesSocket?.ready;
@@ -42,9 +42,11 @@ class WebSocketService extends IWebSocketService {
 
       _tickerSS = _tickerSocket?.stream.listen((message) {
         try {
-          _log.w(message);
+          _log.w('Instance of TICKERSS: $message');
           message = jsonDecode(message);
-          _tickerDataSC.add(TickerData.fromJson(message['result']));
+          if (message['data']?['e'] == '24hrTicker') {
+            _tickerDataSC.add(TickerData.fromJson(message['data']));
+          }
         } catch (e) {
           _log.e('Ticker SS Error: $e');
         }
@@ -52,11 +54,17 @@ class WebSocketService extends IWebSocketService {
 
       _klinesSS = _klinesSocket?.stream.listen((message) {
         try {
-          _log.w('Instance of KLINESSS');
+          _log.w('Instance of KLINESSS: $message');
           message = jsonDecode(message);
-          _candleDataSC.add((message?['result'] as List)
-              .map((e) => CandleData.fromJson(e))
-              .toList());
+          if (message['data']?['e'] == '24hrTicker') {
+            _tickerDataSC.add(TickerData.fromJson(message['data']));
+          }
+          if (message['data']?['e'] == 'kline') {
+            _candleDataSC.add([CandleData.fromJson(message['data']?['k'])]);
+          }
+          if (message['data']?['bids'] != null) {
+            _orderbookDataSC.add(OrderbookData.fromJson(message['data']));
+          }
         } catch (e) {
           _log.e('Klines SS Error: $e');
         }
@@ -66,7 +74,9 @@ class WebSocketService extends IWebSocketService {
         try {
           _log.w('Instance of ORDERBOOKSS: $message');
           message = jsonDecode(message);
-          _orderbookDataSC.add(OrderbookData.fromJson(message['result']));
+          if (message['data']?['bids'] != null) {
+            _orderbookDataSC.add(OrderbookData.fromJson(message['data']));
+          }
         } catch (e) {
           _log.e('Orderbook SS Error: $e');
         }
@@ -80,26 +90,34 @@ class WebSocketService extends IWebSocketService {
   @override
   String subscribeToSymbol(String symbol, String interval) {
     final id = IdUtils.generateId();
-    _tickerSocket?.sink.add(jsonEncode({
-      'id': id,
-      'method': 'ticker.24hr',
-      'params': {'symbol': symbol}
-    }));
-    _klinesSocket?.sink.add(jsonEncode({
-      'id': id,
-      'method': 'uiKlines',
-      'params': {
-        'symbol': symbol,
-        'interval': interval,
-      }
-    }));
+    symbol = symbol.toLowerCase();
+    _tickerSocket?.sink.add(
+      jsonEncode({
+        'method': 'SUBSCRIBE',
+        'params': [
+          '$symbol@ticker',
+        ],
+        'id': 1,
+      }),
+    );
+    _klinesSocket?.sink.add(
+      jsonEncode({
+        'method': 'SUBSCRIBE',
+        'params': [
+          '$symbol@ticker',
+          '$symbol@kline_$interval',
+          '$symbol@depth10',
+        ],
+        'id': 1,
+      }),
+    );
     _orderbookSocket?.sink.add(jsonEncode({
-      'id': id,
-      'method': 'depth',
-      'params': {
-        'symbol': symbol,
-        'limit': 5,
-      }
+      'method': 'SUBSCRIBE',
+      'params': [
+        '$symbol@ticker',
+        '$symbol@depth10',
+      ],
+      'id': 1,
     }));
     return id;
   }

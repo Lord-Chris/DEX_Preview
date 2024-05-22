@@ -50,7 +50,7 @@ class HomeViewModel extends MultipleStreamViewModel {
       setBusy(true);
       await _webSsocketService.init(_symbol);
       // await fetchSymbols();
-      // await fetchCandles();
+      await fetchCandles();
       subscribeToSymbol();
     } on IFailure catch (e) {
       _log.e(e);
@@ -95,7 +95,7 @@ class HomeViewModel extends MultipleStreamViewModel {
   void onData(String key, data) {
     super.onData(key, data);
     if (key == 'candleDataStream') {
-      _candles.addAll(data);
+      _candles.insertAll(0, data);
     }
     if (key == 'tickerDataStream') {
       tickerData.value = data;

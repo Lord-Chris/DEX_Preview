@@ -16,12 +16,11 @@ class BinanceService extends IBinanceService {
   @override
   Future<List<CandleData>> fetchCandles(String symbol, String interval) async {
     final uri =
-        'https://eapi.binance.com/eapi/v1/klines?symbol=$symbol&interval=$interval';
+        'https://api.binance.com/api/v3/klines?symbol=$symbol&interval=$interval';
     final res = await _networkService.get(uri);
 
-    return (res as List<dynamic>).map((e) {
-      e['symbol'] = symbol;
-      return CandleData.fromJson(e);
-    }).toList();
+    return (res as List<dynamic>)
+        .map((e) => CandleData.fromBinanceJson(e, interval, symbol))
+        .toList();
   }
 }
