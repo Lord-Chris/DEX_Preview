@@ -10,4 +10,5 @@ abstract class IWebSocketService {
 
   Stream<TickerData> get tickerDataStream;
   Stream<List<CandleData>> get candleDataStream;
+  Stream<OrderbookData> get orderbookDataStream;
 }

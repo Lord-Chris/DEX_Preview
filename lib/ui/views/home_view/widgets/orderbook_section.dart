@@ -73,243 +73,247 @@ class OrderbookSection extends ViewModelWidget<HomeViewModel> {
               ),
             ],
           ),
-          ListView(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            shrinkWrap: true,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Spacing.horizRegular(),
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Price',
-                          style: AppTextStyles.medium12.copyWith(
-                            color: context.cScheme.onSecondary,
+          Flexible(
+            child: ListView(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              shrinkWrap: true,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Spacing.horizRegular(),
+                    Expanded(
+                      flex: 2,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Price',
+                            style: AppTextStyles.medium12.copyWith(
+                              color: context.cScheme.onSecondary,
+                            ),
                           ),
-                        ),
-                        Text(
-                          '(USDT)',
-                          style: AppTextStyles.medium12.copyWith(
-                            color: context.cScheme.onSecondary,
-                          ),
-                        )
-                      ],
+                          Text(
+                            '(USDT)',
+                            style: AppTextStyles.medium12.copyWith(
+                              color: context.cScheme.onSecondary,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          'Amount',
-                          style: AppTextStyles.medium12.copyWith(
-                            color: context.cScheme.onSecondary,
+                    Expanded(
+                      flex: 2,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            'Amount',
+                            style: AppTextStyles.medium12.copyWith(
+                              color: context.cScheme.onSecondary,
+                            ),
                           ),
-                        ),
-                        Text(
-                          '(BTC)',
-                          style: AppTextStyles.medium12.copyWith(
-                            color: context.cScheme.onSecondary,
-                          ),
-                        )
-                      ],
+                          Text(
+                            '(BTC)',
+                            style: AppTextStyles.medium12.copyWith(
+                              color: context.cScheme.onSecondary,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 3,
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        'Total',
-                        style: AppTextStyles.medium12.copyWith(
-                          color: context.cScheme.onSecondary,
+                    Expanded(
+                      flex: 3,
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          'Total',
+                          style: AppTextStyles.medium12.copyWith(
+                            color: context.cScheme.onSecondary,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Spacing.horizRegular(),
-                ],
-              ),
-              Spacing.vertSmall(),
-              ListView.builder(
-                padding: EdgeInsets.zero,
-                itemCount: 3,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 2),
-                    child: Stack(
-                      children: [
-                        Row(
-                          children: [
-                            const Spacer(flex: 2),
-                            Expanded(
-                              flex: 5,
-                              child: LayoutBuilder(
-                                builder: (context, constraints) {
-                                  return Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Container(
-                                      height: 20,
-                                      width: constraints.maxWidth / 1.5,
-                                      color: AppColors.red.withOpacity(.15),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Spacing.horizRegular(),
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                '36920.12',
-                                style: AppTextStyles.medium12.copyWith(
-                                  color: AppColors.red,
+                    Spacing.horizRegular(),
+                  ],
+                ),
+                Spacing.vertSmall(),
+                ListView.builder(
+                  padding: EdgeInsets.zero,
+                  itemCount: viewModel.orderbookData?.bids.length ?? 0,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    final data = viewModel.orderbookData?.bids[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2),
+                      child: Stack(
+                        children: [
+                          Row(
+                            children: [
+                              const Spacer(flex: 2),
+                              Expanded(
+                                flex: 5,
+                                child: LayoutBuilder(
+                                  builder: (context, constraints) {
+                                    return Align(
+                                      alignment: Alignment.centerRight,
+                                      child: Container(
+                                        height: 20,
+                                        width: constraints.maxWidth / 1.5,
+                                        color: AppColors.red.withOpacity(.15),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                '0.758965',
-                                textAlign: TextAlign.end,
-                                style: AppTextStyles.medium12.copyWith(
-                                  color: context.cScheme.onBackground,
+                            ],
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Spacing.horizRegular(),
+                              Expanded(
+                                flex: 2,
+                                child: Text(
+                                  data?.formattedPrice ?? '0',
+                                  style: AppTextStyles.medium12.copyWith(
+                                    color: AppColors.red,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Expanded(
-                              flex: 3,
-                              child: Text(
-                                '28,020.98',
-                                textAlign: TextAlign.end,
-                                style: AppTextStyles.medium12.copyWith(
-                                  color: context.cScheme.onBackground,
+                              Expanded(
+                                flex: 2,
+                                child: Text(
+                                  data?.quantity ?? '0',
+                                  textAlign: TextAlign.end,
+                                  style: AppTextStyles.medium12.copyWith(
+                                    color: context.cScheme.onBackground,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Spacing.horizRegular(),
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-              Spacing.vertSmall(),
+                              Expanded(
+                                flex: 3,
+                                child: Text(
+                                  data?.total ?? '0',
+                                  textAlign: TextAlign.end,
+                                  style: AppTextStyles.medium12.copyWith(
+                                    color: context.cScheme.onBackground,
+                                  ),
+                                ),
+                              ),
+                              Spacing.horizRegular(),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+                Spacing.vertSmall(),
 
-              ///
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '36,641.20',
-                    style: AppTextStyles.medium16.copyWith(
+                ///
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '36,641.20',
+                      style: AppTextStyles.medium16.copyWith(
+                        color: AppColors.green,
+                      ),
+                    ),
+                    Spacing.horizRegular(),
+                    const Icon(
+                      CupertinoIcons.up_arrow,
                       color: AppColors.green,
+                      size: 16,
                     ),
-                  ),
-                  Spacing.horizRegular(),
-                  const Icon(
-                    CupertinoIcons.up_arrow,
-                    color: AppColors.green,
-                    size: 16,
-                  ),
-                  Spacing.horizRegular(),
-                  Text(
-                    '36,641.20',
-                    style: AppTextStyles.medium16.copyWith(
-                      color: context.cScheme.onBackground,
+                    Spacing.horizRegular(),
+                    Text(
+                      '36,641.20',
+                      style: AppTextStyles.medium16.copyWith(
+                        color: context.cScheme.onBackground,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              Spacing.vertSmall(),
-              ListView.builder(
-                padding: EdgeInsets.zero,
-                itemCount: 3,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 2),
-                    child: Stack(
-                      children: [
-                        Row(
-                          children: [
-                            const Spacer(flex: 2),
-                            Expanded(
-                              flex: 5,
-                              child: LayoutBuilder(
-                                builder: (context, constraints) {
-                                  return Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Container(
-                                      height: 20,
-                                      width: constraints.maxWidth / 1.5,
-                                      color: AppColors.green.withOpacity(.15),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Spacing.horizRegular(),
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                '36920.12',
-                                style: AppTextStyles.medium12.copyWith(
-                                  color: AppColors.green,
+                  ],
+                ),
+                Spacing.vertSmall(),
+                ListView.builder(
+                  padding: EdgeInsets.zero,
+                  itemCount: viewModel.orderbookData?.asks.length ?? 0,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    final data = viewModel.orderbookData?.asks[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2),
+                      child: Stack(
+                        children: [
+                          Row(
+                            children: [
+                              const Spacer(flex: 2),
+                              Expanded(
+                                flex: 5,
+                                child: LayoutBuilder(
+                                  builder: (context, constraints) {
+                                    return Align(
+                                      alignment: Alignment.centerRight,
+                                      child: Container(
+                                        height: 20,
+                                        width: constraints.maxWidth / 1.5,
+                                        color: AppColors.green.withOpacity(.15),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                '0.758965',
-                                textAlign: TextAlign.end,
-                                style: AppTextStyles.medium12.copyWith(
-                                  color: context.cScheme.onBackground,
+                            ],
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Spacing.horizRegular(),
+                              Expanded(
+                                flex: 2,
+                                child: Text(
+                                  data?.formattedPrice ?? '0',
+                                  style: AppTextStyles.medium12.copyWith(
+                                    color: AppColors.green,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Expanded(
-                              flex: 3,
-                              child: Text(
-                                '28,020.98',
-                                textAlign: TextAlign.end,
-                                style: AppTextStyles.medium12.copyWith(
-                                  color: context.cScheme.onBackground,
+                              Expanded(
+                                flex: 2,
+                                child: Text(
+                                  data?.quantity ?? '0',
+                                  textAlign: TextAlign.end,
+                                  style: AppTextStyles.medium12.copyWith(
+                                    color: context.cScheme.onBackground,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Spacing.horizRegular(),
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ],
+                              Expanded(
+                                flex: 3,
+                                child: Text(
+                                  data?.total ?? '0',
+                                  textAlign: TextAlign.end,
+                                  style: AppTextStyles.medium12.copyWith(
+                                    color: context.cScheme.onBackground,
+                                  ),
+                                ),
+                              ),
+                              Spacing.horizRegular(),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ],
       ),

@@ -15,14 +15,18 @@ class WebSocketService extends IWebSocketService {
 
   StreamSubscription<dynamic>? _tickerSS;
   StreamSubscription<dynamic>? _klinesSS;
+  StreamSubscription<dynamic>? _orderbookSS;
 
   final StreamController<TickerData> _tickerDataSC =
       StreamController<TickerData>.broadcast();
   final StreamController<List<CandleData>> _candleDataSC =
       StreamController<List<CandleData>>.broadcast();
+  final StreamController<OrderbookData> _orderbookDataSC =
+      StreamController<OrderbookData>.broadcast();
 
   WebSocketChannel? _tickerSocket;
   WebSocketChannel? _klinesSocket;
+  WebSocketChannel? _orderbookSocket;
 
   @override
   Future<void> init(String symbol) async {
@@ -30,9 +34,11 @@ class WebSocketService extends IWebSocketService {
       final wsUrl = Uri.parse(_channel);
       _tickerSocket = WebSocketChannel.connect(wsUrl);
       _klinesSocket = WebSocketChannel.connect(wsUrl);
+      _orderbookSocket = WebSocketChannel.connect(wsUrl);
 
       await _tickerSocket?.ready;
       await _klinesSocket?.ready;
+      await _orderbookSocket?.ready;
 
       _tickerSS = _tickerSocket?.stream.listen((message) {
         try {
@@ -53,6 +59,16 @@ class WebSocketService extends IWebSocketService {
               .toList());
         } catch (e) {
           _log.e('Klines SS Error: $e');
+        }
+      });
+
+      _orderbookSS = _orderbookSocket?.stream.listen((message) {
+        try {
+          _log.w('Instance of ORDERBOOKSS: $message');
+          message = jsonDecode(message);
+          _orderbookDataSC.add(OrderbookData.fromJson(message['result']));
+        } catch (e) {
+          _log.e('Orderbook SS Error: $e');
         }
       });
     } on Exception catch (e) {
@@ -77,6 +93,14 @@ class WebSocketService extends IWebSocketService {
         'interval': interval,
       }
     }));
+    _orderbookSocket?.sink.add(jsonEncode({
+      'id': id,
+      'method': 'depth',
+      'params': {
+        'symbol': symbol,
+        'limit': 5,
+      }
+    }));
     return id;
   }
 
@@ -98,12 +122,16 @@ class WebSocketService extends IWebSocketService {
   Future<void> dispose() async {
     _tickerSocket?.sink.close(normalClosure);
     _klinesSocket?.sink.close(normalClosure);
+    _orderbookSocket?.sink.close(normalClosure);
     _tickerSS?.cancel();
     _klinesSS?.cancel();
+    _orderbookSS?.cancel();
   }
 
   @override
   Stream<TickerData> get tickerDataStream => _tickerDataSC.stream;
   @override
   Stream<List<CandleData>> get candleDataStream => _candleDataSC.stream;
+  @override
+  Stream<OrderbookData> get orderbookDataStream => _orderbookDataSC.stream;
 }

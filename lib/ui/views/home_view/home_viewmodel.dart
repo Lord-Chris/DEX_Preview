@@ -21,6 +21,7 @@ class HomeViewModel extends MultipleStreamViewModel {
   ValueNotifier<TickerData?> tickerData = ValueNotifier(null);
   OrdersViewEnum ordersView = OrdersViewEnum.openOrders;
   int arrangement = 0;
+  OrderbookData? orderbookData;
 
   void setInterval(String value) {
     _interval = value;
@@ -47,10 +48,10 @@ class HomeViewModel extends MultipleStreamViewModel {
   Future<void> init() async {
     try {
       setBusy(true);
-      // await _webSsocketService.init(_symbol);
+      await _webSsocketService.init(_symbol);
       // await fetchSymbols();
       // await fetchCandles();
-      // subscribeToSymbol();
+      subscribeToSymbol();
     } on IFailure catch (e) {
       _log.e(e);
     } finally {
@@ -99,6 +100,9 @@ class HomeViewModel extends MultipleStreamViewModel {
     if (key == 'tickerDataStream') {
       tickerData.value = data;
     }
+    if (key == 'orderbookDataStream') {
+      orderbookData = data;
+    }
   }
 
   @override
@@ -107,6 +111,8 @@ class HomeViewModel extends MultipleStreamViewModel {
             StreamData<TickerData>(_webSsocketService.tickerDataStream),
         'candleDataStream':
             StreamData<List<CandleData>>(_webSsocketService.candleDataStream),
+        'orderbookDataStream':
+            StreamData<OrderbookData>(_webSsocketService.orderbookDataStream),
       };
 
   String get symbol => _symbol;
